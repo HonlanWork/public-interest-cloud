@@ -1,0 +1,1152 @@
+{% extends 'layout.html' %} {% block style %}
+<style>
+#plot1 {
+    width: 100%;
+    height: 400px;
+    background-color: #30323c !important;
+}
+
+#plot2 {
+    width: 100%;
+    height: 120px;
+    background-color: #30323c !important;
+}
+
+#indicator {
+    position: absolute;
+    top: 25px;
+    left: 120px;
+    z-index: 999;
+    height: 85px;
+    width: 16px;
+    background-color: rgba(160, 160, 160, 0.4);
+    display: none;
+}
+
+#plot31 {
+    width: 100%;
+    height: 250px;
+    background-color: #30323c !important;
+}
+
+#plot32 {
+    width: 100%;
+    height: 250px;
+    background-color: #30323c !important;
+}
+
+#plot4 {
+    width: 100%;
+    height: 600px;
+    background-color: #30323c !important;
+}
+
+#plot4 {
+    width: 100%;
+    height: 500px;
+    background-color: #30323c !important;
+}
+
+#plot5 {
+    position: relative;
+    text-align: center;
+}
+
+#plot5 #index {
+    position: absolute;
+    top: -20px;
+    left: 20px;
+}
+
+#plot5 #index .cell {
+    padding: 8px;
+    padding-left: 12px;
+    color: rgb(90, 103, 121);
+    background-color: #fff;
+    font-size: 12px;
+    z-index: 999;
+    text-align: left;
+    display: none;
+}
+
+#plot5 #index .cell:nth-of-type(2n) {
+    background-color: rgb(250, 251, 253);
+}
+
+#plot5 #index .cell:nth-of-type(2n + 1) {
+    background-color: rgb(255, 255, 255);
+}
+
+#plot5 #index .cell:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#plot5 #index .cell:hover {
+    cursor: pointer;
+    background-color: #50a3ba;
+    color: #fff;
+}
+
+#plot5 #index input {
+    color: #fff;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: 200px;
+    background-color: #666;
+}
+
+#plot5 #index input:hover {
+    cursor: pointer;
+}
+
+#plot5 #index.active input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#plot51 {
+    width: 100%;
+    height: 240px;
+    background-color: #30323c !important;
+}
+
+#plot52 {
+    width: 100%;
+    height: 240px;
+    background-color: #30323c !important;
+}
+</style>
+{% endblock %} {% block body %}
+<script src="{{url_for('static',filename='js/jquery.mousewheel.min.js')}}"></script>
+<h3 style="margin-left:20px;margin-bottom:0px;">空气质量问题有多 <span style="color:#d94e5d;">严重</span></h3>
+<div style="position:relative;">
+    <div id="plot1"></div>
+    <p style="position:absolute;top:25px;left:40px;font-size:12px;color:#999;">山东省<span style="color:#88b089;font-size:16px;margin-left:5px;margin-right:5px;" id="count_sd"></span>个空气监测站点</p>
+    <p style="position:absolute;top:25px;right:40px;font-size:12px;text-align:right;color:#999;">江苏省<span style="color:#88b089;font-size:16px;margin-left:5px;margin-right:5px;" id="count_js"></span>个
+        <br/>空气监测站点</p>
+</div>
+<div style="position:relative;">
+    <div id="plot2"></div>
+    <div id="indicator"></div>
+    <h4 style="position:absolute;left:50%;color:#f2f2f2;top:-160px;margin-left:-102px;"></h4>
+    <p style="position:absolute;left:60px;top:-12px;color:#999;font-size:12px;">点击时间轴切换时间节点</p>
+</div>
+<div class="row" style="margin-top:10px">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div style="position:relative;">
+            <p style="position:absolute;top:60px;left:60px;z-index:999;color:#999;font-size:12px;">山东省
+                <br/>空气质量等级分布</p>
+            <div id="plot31"></div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div style="position:relative;">
+            <p style="position:absolute;top:60px;right:60px;z-index:999;text-align:right;color:#999;font-size:12px;">江苏省
+                <br/>空气质量等级分布</p>
+            <div id="plot32"></div>
+        </div>
+    </div>
+</div>
+<h3 style="text-align:center;margin-top:60px;margin-bottom:40px;">你可能不知道这些 <span style="color:#d94e5d;">关联</span></h3>
+<div id="plot4"></div>
+<h3 style="text-align:right;margin-top:60px;margin-bottom:40px;">空气监测站点详细 <span style="color:#d94e5d;">数据</span></h3>
+<div class="row">
+    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+        <div id="plot5">
+            <p style="position:absolute;top:60px;left:60px;text-align:right;color:#999;font-size:12px;">滚动页面以筛选站点</p>
+            <p style="position:absolute;top:90px;left:60px;text-align:right;color:#999;font-size:12px;">靠前的站点<span style="color:#88b089;font-size:16px;margin-left:5px;margin-right:5px;">整体AQI</span>更低</p>
+            <div id="index">
+                <input type="text" class="form-control" value="AQI">
+                <div class="cell" name="aqi">AQI</div>
+                <div class="cell" name="so2">SO2</div>
+                <div class="cell" name="no2">NO2</div>
+                <div class="cell" name="co">CO</div>
+                <div class="cell" name="o3">O3</div>
+                <div class="cell" name="pm25">PM2.5</div>
+                <div class="cell" name="pm10">PM10</div>
+            </div>
+            <svg width="800" height="480">
+                <g id="path"></g>
+                <g id="axis"></g>
+            </svg>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+        <div id="plot51"></div>
+        <div id="plot52"></div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $('#nav a').removeClass('active');
+    $('#nav #nav1').addClass('active');
+
+    var dataset = eval({{dataset | safe}});
+    console.log(dataset);
+    $('#count_sd').text(dataset['stations_count']['山东省']);
+    $('#count_js').text(dataset['stations_count']['江苏省']);
+    var aqi_index = dataset['json']['aqi_data']['timestamps'].length - 1;
+    $('#indicator').css('left', $('#plot2').width() - 40 - 8);
+    setTimeout(function() {
+        $('#indicator').fadeIn('slow');
+    }, 1000);
+    $('#indicator').siblings('h4').text(dataset['json']['aqi_data']['timestamps'][aqi_index]);
+
+    var convertData = function(data, k) {
+        var res = [];
+        for (var i = 0; i < data.length; i++) {
+            var geoCoord = dataset['stations'][k][data[i].name];
+            if (geoCoord) {
+                res.push({
+                    name: data[i].name,
+                    value: geoCoord.concat(data[i].value)
+                });
+            }
+        }
+        return res;
+    };
+
+    function aqi_scatter_plot() {
+        var tmp = {};
+        for (var key in dataset['json']['aqi_data']['data']) {
+            var value = dataset['json']['aqi_data']['data'][key];
+            tmp[key] = [];
+            for (var k in value) {
+                var v = value[k];
+                tmp[key].push({
+                    name: k,
+                    value: v[aqi_index]
+                });
+            }
+        }
+
+        var plot1 = echarts.init(document.getElementById('plot1'), 'dark');
+        var option1 = {
+            visualMap: {
+                min: 0,
+                max: 400,
+                calculable: true,
+                splitNumber: 5,
+                inRange: {
+                    color: ['#50a3ba', '#eac736', '#d94e5d']
+                },
+                textStyle: {
+                    color: '#fff'
+                },
+                orient: 'horizontal',
+                x: 'center',
+                padding: [0, 0, 40, 0],
+            },
+            geo: [{
+                map: '山东',
+                left: '5%',
+                label: {
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                roam: false,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#454853',
+                        borderColor: '#30323c'
+                    },
+                    emphasis: {
+                        areaColor: '#454853'
+                    }
+                },
+                width: '400px',
+            }, {
+                map: '江苏',
+                left: '55%',
+                label: {
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                roam: false,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#454853',
+                        borderColor: '#30323c'
+                    },
+                    emphasis: {
+                        areaColor: '#454853'
+                    }
+                },
+                height: '400px',
+            }],
+            series: [{
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: convertData(tmp['山东省'], '山东省'),
+                symbolSize: 8,
+            }, {
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: convertData(tmp['江苏省'], '江苏省'),
+                geoIndex: 1,
+                symbolSize: 8,
+            }]
+        };
+        plot1.setOption(option1);
+    }
+    aqi_scatter_plot();
+
+    var plot2 = echarts.init(document.getElementById('plot2'), 'dark');
+    var option = {
+        color: ['#50a3ba', '#eac736'],
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['山东省日均AQI', '江苏省日均AQI'],
+            padding: [0, 0, 0, 0],
+        },
+        grid: {
+            left: 60,
+            right: 40,
+            top: 25,
+            bottom: 10
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false
+            },
+            data: dataset['json']['aqi_data']['timestamps']
+        },
+        yAxis: {
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                margin: 16
+            }
+        },
+        series: [{
+            name: '山东日均AQI',
+            type: 'line',
+            symbol: 'none',
+            showSymbol: false,
+            smooth: true,
+            data: dataset['json']['aqi_average']['山东省'],
+        }, {
+            name: '江苏日均AQI',
+            type: 'line',
+            symbol: 'none',
+            showSymbol: false,
+            smooth: true,
+            data: dataset['json']['aqi_average']['江苏省'],
+        }]
+    };
+    plot2.setOption(option);
+
+    $('#plot2').click(function(event) {
+        var tmp = event.pageX - 60 - 8;
+        if (tmp < 52) {
+            tmp = 52;
+        }
+        if (tmp > $('#plot2').width() - 40 - 8) {
+            tmp = $('#plot2').width() - 40 - 8;
+        }
+        $('#indicator').css('left', tmp);
+        var n = parseFloat(tmp + 8 - 60) / ($('#plot2').width() - 100) * (dataset['json']['aqi_data']['timestamps'].length - 1);
+        $('#indicator').siblings('h4').text(dataset['json']['aqi_data']['timestamps'][parseInt(n)]);
+
+        aqi_index = parseInt(n);
+        aqi_scatter_plot();
+    });
+
+    var plot31 = echarts.init(document.getElementById('plot31'), 'dark');
+    var option = {
+        color: ['#8dc3d2', '#68b0c4', '#50a3ba', '#3d869a', '#2e6676', '#25515d'],
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['优', '良', '轻度污染', '中度污染', '重度污染', '严重污染'],
+            show: false
+        },
+        series: [{
+            name: '山东省',
+            type: 'pie',
+            radius: '60%',
+            center: ['70%', '50%'],
+            data: [{
+                value: 5410,
+                name: '优'
+            }, {
+                value: 13382,
+                name: '良'
+            }, {
+                value: 8641,
+                name: '轻度污染'
+            }, {
+                value: 6630,
+                name: '中度污染'
+            }, {
+                value: 11361,
+                name: '重度污染'
+            }, {
+                value: 7769,
+                name: '严重污染'
+            }, ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    plot31.setOption(option);
+    var plot32 = echarts.init(document.getElementById('plot32'), 'dark');
+    var option = {
+        color: ['#f4e192', '#f0d874', '#edd055', '#eac736', '#d7b116', '#a88b12'],
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['优', '良', '轻度污染', '中度污染', '重度污染', '严重污染'],
+            show: false
+        },
+        series: [{
+            name: '江苏省',
+            type: 'pie',
+            radius: '60%',
+            center: ['30%', '50%'],
+            data: [{
+                value: 2322,
+                name: '优'
+            }, {
+                value: 21067,
+                name: '良'
+            }, {
+                value: 14222,
+                name: '轻度污染'
+            }, {
+                value: 6946,
+                name: '中度污染'
+            }, {
+                value: 8070,
+                name: '重度污染'
+            }, {
+                value: 1030,
+                name: '严重污染'
+            }, ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    plot32.setOption(option);
+
+    var plot4 = echarts.init(document.getElementById('plot4'), 'dark');
+    var schema = [{
+        name: 'aqi',
+        index: 1,
+        text: 'AQI'
+    }, {
+        name: 'so2',
+        index: 2,
+        text: 'SO2'
+    }, {
+        name: 'no2',
+        index: 3,
+        text: 'NO2'
+    }, {
+        name: 'co',
+        index: 4,
+        text: 'CO'
+    }, {
+        name: 'o3',
+        index: 5,
+        text: 'O3'
+    }, {
+        name: 'pm10',
+        index: 6,
+        text: 'PM10'
+    }, {
+        name: 'pm25',
+        index: 7,
+        text: 'PM2.5'
+    }, {
+        name: 'province',
+        index: 8,
+        text: '省份'
+    }, {
+        name: 'stationcode',
+        index: 9,
+        text: '站点编码'
+    }];
+
+    var CATEGORY_DIM_COUNT = 7;
+    var GAP = 1;
+    var BASE_LEFT = 30;
+    var BASE_TOP = 10;
+    // var GRID_WIDTH = 220;
+    // var GRID_HEIGHT = 220;
+    var GRID_WIDTH = (99 - BASE_LEFT - GAP) / CATEGORY_DIM_COUNT - GAP;
+    var GRID_HEIGHT = (99 - BASE_TOP - GAP) / CATEGORY_DIM_COUNT - GAP;
+    var CATEGORY_DIM = 7;
+    var SYMBOL_SIZE = 3;
+
+    function retrieveScatterData(data, dimX, dimY) {
+        var result = [];
+        for (var i = 0; i < data.length; i++) {
+            var item = [data[i][dimX], data[i][dimY]];
+            item[CATEGORY_DIM] = data[i][CATEGORY_DIM];
+            result.push(item);
+        }
+        return result;
+    }
+
+    function generateGrids(option) {
+        var index = 0;
+
+        for (var i = 0; i < CATEGORY_DIM_COUNT; i++) {
+            for (var j = 0; j < CATEGORY_DIM_COUNT; j++) {
+                if (CATEGORY_DIM_COUNT - i + j >= CATEGORY_DIM_COUNT) {
+                    continue;
+                }
+
+                option.grid.push({
+                    left: BASE_LEFT + i * (GRID_WIDTH + GAP) + '%',
+                    top: BASE_TOP + j * (GRID_HEIGHT + GAP) + '%',
+                    width: GRID_WIDTH + '%',
+                    height: GRID_HEIGHT + '%'
+                });
+
+                option.brush.xAxisIndex && option.brush.xAxisIndex.push(index);
+                option.brush.yAxisIndex && option.brush.yAxisIndex.push(index);
+
+                option.xAxis.push({
+                    name: j === 0 ? schema[i].text : '',
+                    nameLocation: 'middle',
+                    nameGap: 0,
+                    splitNumber: 3,
+                    splitLine: {
+                        show: false
+                    },
+                    position: 'top',
+                    axisLine: {
+                        // show: j === 0,
+                        show: false,
+                        onZero: false
+                    },
+                    axisTick: {
+                        // show: j === 0,
+                        show: false,
+                        inside: true
+                    },
+                    axisLabel: {
+                        // show: j === 0
+                        show: false,
+                    },
+                    type: 'value',
+                    gridIndex: index,
+                    scale: true
+                });
+
+                option.yAxis.push({
+                    name: i === CATEGORY_DIM_COUNT - 1 ? schema[j].text : '',
+                    nameLocation: 'middle',
+                    nameGap: 0,
+                    splitNumber: 3,
+                    splitLine: {
+                        show: false
+                    },
+                    position: 'right',
+                    axisLine: {
+                        // show: i === CATEGORY_DIM_COUNT - 1,
+                        show: false,
+                        onZero: false
+                    },
+                    axisTick: {
+                        // show: i === CATEGORY_DIM_COUNT - 1,
+                        show: false,
+                        inside: true
+                    },
+                    axisLabel: {
+                        // show: i === CATEGORY_DIM_COUNT - 1
+                        show: false
+                    },
+                    type: 'value',
+                    gridIndex: index,
+                    scale: true
+                });
+
+                option.series.push({
+                    type: 'scatter',
+                    symbolSize: SYMBOL_SIZE,
+                    xAxisIndex: index,
+                    yAxisIndex: index,
+                    data: retrieveScatterData(dataset.json.aqi_average_station, i, j)
+                });
+
+                option.visualMap.seriesIndex.push(option.series.length - 1);
+
+                index++;
+            }
+        }
+        plot4.setOption(option);
+    }
+
+    function merge_geo(province) {
+        var tmp = dataset.stations[province];
+        var result = []
+        for (var i = 0; i < dataset.json.aqi_average_station.length; i++) {
+            if (tmp.hasOwnProperty(dataset.json.aqi_average_station[i][8])) {
+                result.push({
+                    name: dataset.json.aqi_average_station[i][8],
+                    value: [tmp[dataset.json.aqi_average_station[i][8]][0], tmp[dataset.json.aqi_average_station[i][8]][1], dataset.json.aqi_average_station[i][0]]
+                });
+            }
+
+        }
+        return result;
+    }
+
+    var option = {
+        animation: false,
+        brush: {
+            toolbox: [''],
+            brushLink: 'all',
+            xAxisIndex: [],
+            yAxisIndex: [],
+            inBrush: {
+                opacity: 1
+            },
+            outOfBrush: {
+                opacity: 0.03,
+                color: '#ddd'
+            }
+        },
+        visualMap: {
+            type: 'piecewise',
+            categories: ["山东省", "江苏省"],
+            dimension: CATEGORY_DIM,
+            orient: 'horizontal',
+            top: 0,
+            left: 'center',
+            inRange: {
+                color: ['#50a3ba', '#eac736']
+            },
+            seriesIndex: [0],
+            textStyle: {
+                color: '#fff'
+            },
+            outOfRange: {
+                opacity: 0
+            },
+        },
+        parallelAxis: [{
+            dim: 0,
+            name: schema[0].text
+        }, {
+            dim: 1,
+            name: schema[1].text
+        }, {
+            dim: 2,
+            name: schema[2].text
+        }, {
+            dim: 3,
+            name: schema[3].text
+        }, {
+            dim: 4,
+            name: schema[4].text
+        }, {
+            dim: 5,
+            name: schema[5].text
+        }, {
+            dim: 6,
+            name: schema[6].text
+        }],
+        geo: [{
+            map: '山东',
+            left: '23%',
+            top: '24%',
+            height: '120px',
+            label: {
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            roam: false,
+            itemStyle: {
+                normal: {
+                    areaColor: '#454853',
+                    borderColor: '#30323c'
+                },
+                emphasis: {
+                    areaColor: '#454853'
+                }
+            },
+        }, {
+            map: '江苏',
+            left: '2%',
+            top: '7%',
+            height: '200px',
+            label: {
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            roam: false,
+            itemStyle: {
+                normal: {
+                    areaColor: '#454853',
+                    borderColor: '#30323c'
+                },
+                emphasis: {
+                    areaColor: '#454853'
+                }
+            },
+        }],
+        parallel: {
+            top: '64%',
+            left: '5%',
+            height: '31%',
+            width: '55%',
+            parallelAxisDefault: {
+                type: 'value',
+                name: 'AQI指数',
+                nameLocation: 'end',
+                nameGap: 20,
+                splitNumber: 3,
+                nameTextStyle: {
+                    fontSize: 14
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#999'
+                    }
+                },
+                axisTick: {
+                    lineStyle: {
+                        color: '#999'
+                    }
+                },
+                splitLine: {
+                    show: false
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#ddd'
+                    }
+                }
+            }
+        },
+        grid: [],
+        xAxis: [],
+        yAxis: [],
+        series: [{
+            name: 'parallel',
+            type: 'parallel',
+            smooth: true,
+            lineStyle: {
+                normal: {
+                    width: 1,
+                    opacity: 0.3
+                }
+            },
+            data: dataset.json.aqi_average_station
+        }, {
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: merge_geo('山东省'),
+            symbolSize: 4,
+            itemStyle: {
+                normal: {
+                    color: '#50a3ba'
+                }
+            }
+        }, {
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: merge_geo('江苏省'),
+            geoIndex: 1,
+            symbolSize: 4,
+            itemStyle: {
+                normal: {
+                    color: '#eac736'
+                }
+            }
+        }]
+    };
+
+    generateGrids(option);
+
+    var p5_width = 800;
+    var p5_height = 480;
+    var p5_margins = [0, 0, 30, 60];
+    var p5_axis = [{
+        x1: p5_margins[3],
+        y1: p5_height - p5_margins[2],
+        x2: p5_margins[3] + (p5_width - p5_margins[1] - p5_margins[3]) * 0.6,
+        y2: p5_height - p5_margins[2]
+    }];
+    var N = 6;
+    for (var i = 0; i < N; i++) {
+        p5_axis.push({
+            x1: p5_margins[3] + 0.6 * i * parseFloat(p5_width - p5_margins[1] - p5_margins[3]) / (N - 1),
+            y1: p5_height - p5_margins[2],
+            x2: p5_margins[3] + 0.6 * i * parseFloat(p5_width - p5_margins[1] - p5_margins[3]) / (N - 1),
+            y2: p5_height - p5_margins[2] + 8
+        })
+    }
+    N = 3;
+    p5_axis.push({
+        x1: p5_margins[3],
+        y1: p5_height - p5_margins[2],
+        x2: p5_margins[3],
+        y2: p5_height - p5_margins[2] - (p5_height - p5_margins[0] - p5_margins[3]) * 0.1
+    });
+    for (var i = 0; i < N; i++) {
+        p5_axis.push({
+            x1: p5_margins[3],
+            y1: p5_height - p5_margins[2] - i * parseFloat(p5_height - p5_margins[0] - p5_margins[3]) * 0.1 / (N - 1),
+            x2: p5_margins[3] - 8,
+            y2: p5_height - p5_margins[2] - i * parseFloat(p5_height - p5_margins[0] - p5_margins[3]) * 0.1 / (N - 1)
+        })
+    }
+
+    d3.select("#plot5 svg g#axis").selectAll('line.axis').data(p5_axis).enter().append('line').attr({
+        x1: function(d) {
+            return d.x1;
+        },
+        y1: function(d) {
+            return d.y1;
+        },
+        x2: function(d) {
+            return d.x2;
+        },
+        y2: function(d) {
+            return d.y2;
+        },
+        stroke: 'rgba(204, 204, 204, 0.9)',
+        'stroke-width': 1,
+        'shape-rendering': 'crispEdges',
+        'class': 'axis'
+    });
+
+    var p5_target;
+    var p5_length;
+    var p5_column;
+    var p5_data;
+    var p5_paths;
+    var p5_max;
+    var p5_curve1;
+    var p5_curve2;
+    var p5_current = 0;
+    var p5_y = [0, 1, 2];
+    var p5_map = [[], []];
+
+    $.ajax({
+            url: "{{url_for('aqi_data_details')}}",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+        })
+        .done(function(result) {
+            dataset.json.aqi_data_details = result;
+            p5_target = 'aqi';
+            p5_length = dataset.json.aqi_data_details.data[p5_target][1].length;
+            p5_column = dataset.json.aqi_data_details.timestamps.length;
+            p5_data = [];
+            for (var i = 0; i < p5_length; i++) {
+                p5_data.push(i);
+            }
+            p5_paths = d3.select("#plot5 svg g#path").selectAll('path').data(p5_data, function(d) {
+                return d;
+            })
+            p5_max = dataset.json.aqi_data_details.data[p5_target][0];
+            p5_curve1 = d3.svg.line().x(function(d) {
+                return parseInt(d[0] * (p5_width - p5_margins[1] - p5_margins[3])) + p5_margins[3];
+            }).y(function(d) {
+                return p5_height - p5_margins[2];
+            }).interpolate('basis');
+            p5_curve2 = d3.svg.line().x(function(d) {
+                return parseInt(d[0] * (p5_width - p5_margins[1] - p5_margins[3])) + p5_margins[3];
+            }).y(function(d) {
+                return parseInt(d[1] * (p5_height - p5_margins[2] - p5_margins[0])) + p5_margins[0];
+            }).interpolate('basis');
+
+            d3.select("#plot5 svg g#axis").selectAll('text.x').data(dataset.json.aqi_data_details.timetexts).enter().append('text').attr({
+                fill: '#fff',
+                'font-size': 12,
+                'text-anchor': 'middle',
+                'transform': function(d, i) {
+                    return 'translate(' + (p5_margins[3] + i * 0.6 * (p5_width - p5_margins[1] - p5_margins[3]) / 5) + ',' + (p5_height - 5) + ')';
+                },
+                'class': 'x'
+            }).text(function(d) {
+                return d;
+            });
+            var tmp = [0, p5_max / 2, p5_max];
+            d3.select("#plot5 svg g#axis").selectAll('text.y').data(p5_y).enter().append('text').attr({
+                fill: '#fff',
+                'font-size': 12,
+                'text-anchor': 'end',
+                'transform': function(d) {
+                    return 'translate(' + (p5_margins[3] - 15) + ', ' + (p5_height - p5_margins[2] - d * parseFloat(p5_height - p5_margins[0] - p5_margins[3]) * 0.1 / 2 + 6) + ')';
+                },
+                'class': 'y'
+            }).text(function(d) {
+                return tmp[d];
+            });
+
+            p5_paths.enter().append('path').attr({
+                fill: 'none',
+                stroke: function(d, i) {
+                    var opacity = 0.5 * parseFloat(i) / p5_length + 0.4
+                    if (dataset.json.aqi_data_details.data[p5_target][1][i][1] == '山东省') {
+                        return '#50a3ba';
+                    } else {
+                        return '#eac736';
+                    }
+                },
+                d: function(d, i) {
+                    return p5_curve2(dataset.json.aqi_data_details.data[p5_target][1][i][2]);
+                },
+                id: function(d, i) {
+                    return dataset.json.aqi_data_details.data[p5_target][1][i][0];
+                },
+                name: function(d, i) {
+                    return i;
+                }
+            });
+            var tmp = {};
+            for (var i = 0; i < dataset.json.aqi_average_station.length; i++) {
+                tmp[dataset.json.aqi_average_station[i][8]] = dataset.json.aqi_average_station[i][0];
+            }
+            var data1 = [];
+            var data2 = [];
+            for (var key in dataset.stations['山东省']) {
+                data1.push({
+                    name: key,
+                    value: [dataset.stations['山东省'][key][0], dataset.stations['山东省'][key][1], tmp[key]]
+                });
+            }
+            for (var key in dataset.stations['江苏省']) {
+                data2.push({
+                    name: key,
+                    value: [dataset.stations['江苏省'][key][0], dataset.stations['江苏省'][key][1], tmp[key]]
+                });
+            }
+            p5_map = [data1, data2];
+
+            set_active_station(p5_map);
+        })
+        .fail(function() {})
+        .always(function() {});
+
+    function set_active_target(target) {
+        p5_target = target;
+        p5_max = dataset.json.aqi_data_details.data[p5_target][0];
+        var tmp = [0, p5_max / 2, p5_max];
+        d3.select("#plot5 svg g#axis").selectAll('text.y').data(p5_y).text(function(d) {
+            return tmp[d];
+        });
+
+        p5_paths.transition().duration(1200).attr({
+            d: function(d, i) {
+                return p5_curve2(dataset.json.aqi_data_details.data[p5_target][1][i][2]);
+            }
+        });
+    }
+
+    function set_active_station(data) {
+        var plot51 = echarts.init(document.getElementById('plot51'), 'dark');
+        var option = {
+            visualMap: {
+                min: 0,
+                max: 400,
+                calculable: true,
+                splitNumber: 5,
+                inRange: {
+                    color: ['#50a3ba', '#eac736', '#d94e5d']
+                },
+                show: false
+            },
+            geo: [{
+                map: '山东',
+                label: {
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                roam: false,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#454853',
+                        borderColor: '#30323c'
+                    },
+                    emphasis: {
+                        areaColor: '#454853'
+                    }
+                },
+            }],
+            series: [{
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: data[0],
+                symbolSize: 4,
+            }]
+        };
+        plot51.setOption(option);
+
+        var plot52 = echarts.init(document.getElementById('plot52'), 'dark');
+        var option = {
+            visualMap: {
+                min: 0,
+                max: 400,
+                calculable: true,
+                splitNumber: 5,
+                inRange: {
+                    color: ['#50a3ba', '#eac736', '#d94e5d']
+                },
+                show: false
+            },
+            geo: [{
+                map: '江苏',
+                label: {
+                    emphasis: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                roam: false,
+                itemStyle: {
+                    normal: {
+                        areaColor: '#454853',
+                        borderColor: '#30323c'
+                    },
+                    emphasis: {
+                        areaColor: '#454853'
+                    }
+                },
+            }],
+            series: [{
+                type: 'scatter',
+                coordinateSystem: 'geo',
+                data: data[1],
+                symbolSize: 4,
+            }]
+        };
+        plot52.setOption(option);
+    }
+
+    $('#plot5 #index input').click(function(event) {
+        $('#plot5 #index').addClass('active');
+        $('#plot5 #index .cell').show();
+    });
+    $('#plot5 #index .cell').click(function(event) {
+        $('#plot5 #index').removeClass('active');
+        $('#plot5 #index input').val($(this).text());
+        $('#plot5 #index .cell').hide();
+        set_active_target($(this).attr('name'));
+    });
+
+    var p5_scrolling = 0;
+
+    $('#plot5 svg').on('mousewheel', function(e) {
+        var tmp = {};
+        var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) || (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
+        if (delta == -1) {
+            p5_current -= 1;
+            if (p5_current < 0) {
+                p5_current = 0;
+            }
+        }
+        else if (delta == 1) {
+            p5_current += 1;
+            if (p5_current >= p5_length) {
+                p5_current = p5_length - 1;
+            }
+        }
+        p5_paths.attr('opacity', function(d, i){
+            if (i < p5_current) {
+                return 0;
+            }
+            else {
+                tmp[dataset.json.aqi_data_details.data[p5_target][1][i][0]] = 1;
+                return 1;
+            }
+        });
+
+        d3.select('#plot5 svg g#axis').attr('transform', 'translate(' + 0.4 * parseFloat(p5_current) / p5_length * (p5_width - p5_margins[1] - p5_margins[3]) + ',' + (-0.9 * parseFloat(p5_current) / p5_length * (p5_height - p5_margins[0] - p5_margins[2])) + ')');
+
+        if (delta == 0) {
+            p5_scrolling += 1;
+            setTimeout(function(){
+                console.log(p5_scrolling);
+                p5_scrolling -= 1;
+                if (p5_scrolling == 0) {
+                    var tmp_data = [[], []];
+                    for (var i = 0; i < p5_map[0].length; i++) {
+                        if (tmp.hasOwnProperty(p5_map[0][i].name)) {
+                            tmp_data[0].push(p5_map[0][i]);
+                        }
+                    }
+                    for (var i = 0; i < p5_map[1].length; i++) {
+                        if (tmp.hasOwnProperty(p5_map[1][i].name)) {
+                            tmp_data[1].push(p5_map[1][i]);
+                        }
+                    }
+                    set_active_station(tmp_data);
+                }
+            }, 300);
+        }
+
+        return false;
+    });
+});
+</script>
+{% endblock %}

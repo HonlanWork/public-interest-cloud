@@ -1,1 +1,5 @@
+.DS_Store
+*.pyc
 /data/
+/web/config.py
+/web/venv/

@@ -1,0 +1,1 @@
+qingyue_air_aqi <- read.csv("../air_aqi_stat.csv", sep=",", header=TRUE)
