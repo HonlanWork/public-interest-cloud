@@ -66,7 +66,7 @@ fw.close()
 
 # 时间序列，各个站点每个时间戳的aqi
 cursor.execute("delete from json_data where keyword=%s",['aqi_data'])
-cursor.execute("insert into json_data(keyword, json) values(%s, %s)",['aqi_data', json.dumps(result)])
+cursor.execute("insert into json_data(keyword, json, page) values(%s, %s, %s)",['aqi_data', json.dumps(result), 'index'])
 
 for key, value in matrix.items():
 	tmp = []
@@ -81,7 +81,7 @@ for key, value in matrix.items():
 
 # 山东、江苏每天的平均aqi
 cursor.execute("delete from json_data where keyword=%s",['aqi_average'])
-cursor.execute("insert into json_data(keyword, json) values(%s, %s)",['aqi_average', json.dumps(matrix)])
+cursor.execute("insert into json_data(keyword, json, page) values(%s, %s, %s)",['aqi_average', json.dumps(matrix), 'index'])
 
 # 各个站点各项指标平均值
 tmp = {}
@@ -99,13 +99,13 @@ for key, value in tmp.items():
 		for item in value:
 			total += float(item[p])
 			num += 1
-		t.append(total / num)
+		t.append(round(total / num, 2))
 	t.append(value[0]['province'])
 	t.append(key)
 	stationstat.append(t)
 
 cursor.execute("delete from json_data where keyword=%s",['aqi_average_station'])
-cursor.execute("insert into json_data(keyword, json) values(%s, %s)",['aqi_average_station', json.dumps(stationstat)])
+cursor.execute("insert into json_data(keyword, json, page) values(%s, %s, %s)",['aqi_average_station', json.dumps(stationstat), 'index'])
 
 # 各个站点的详细数据
 tmp = []
@@ -152,7 +152,7 @@ for p in ['aqi', 'so2', 'no2', 'co', 'o3', 'pm10', 'pm25']:
 	details['data'][p] = [maxv, mapping]
 
 cursor.execute("delete from json_data where keyword=%s",['aqi_data_details'])
-cursor.execute("insert into json_data(keyword, json) values(%s, %s)",['aqi_data_details', json.dumps(details)])
+cursor.execute("insert into json_data(keyword, json, page) values(%s, %s, %s)",['aqi_data_details', json.dumps(details), 'index'])
 
 cursor.close()
 db.close()

@@ -10,29 +10,29 @@ int[][] colors = new int[6][3];
 
 void setup() {
   // color0
-  colors[0][0] = 0;
-  colors[0][1] = 248;
-  colors[0][2] = 164;
+  colors[0][0] = 141;
+  colors[0][1] = 195;
+  colors[0][2] = 210;
   // color1
-  colors[1][0] = 243;
-  colors[1][1] = 235;
-  colors[1][2] = 0;
+  colors[1][0] = 104;
+  colors[1][1] = 176;
+  colors[1][2] = 196;
   // color2
-  colors[2][0] = 114;
-  colors[2][1] = 133;
-  colors[2][2] = 255;
+  colors[2][0] = 80;
+  colors[2][1] = 163;
+  colors[2][2] = 186;
   // color3
-  colors[3][0] = 216;
-  colors[3][1] = 0;
-  colors[3][2] = 242;
+  colors[3][0] = 61;
+  colors[3][1] = 134;
+  colors[3][2] = 154;
   // color4
-  colors[4][0] = 255;
-  colors[4][1] = 0;
-  colors[4][2] = 139;
+  colors[4][0] = 46;
+  colors[4][1] = 102;
+  colors[4][2] = 118;
   // color5
-  colors[5][0] = 255;
-  colors[5][1] = 0;
-  colors[5][2] = 63;
+  colors[5][0] = 37;
+  colors[5][1] = 81;
+  colors[5][2] = 93;
   table = loadTable("air_aqi_stat.csv");
   R = table.getRowCount();
   C = table.getColumnCount();

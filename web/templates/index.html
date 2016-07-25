@@ -37,12 +37,6 @@
 
 #plot4 {
     width: 100%;
-    height: 600px;
-    background-color: #30323c !important;
-}
-
-#plot4 {
-    width: 100%;
     height: 500px;
     background-color: #30323c !important;
 }
@@ -50,6 +44,26 @@
 #plot5 {
     position: relative;
     text-align: center;
+}
+
+#plot5 #info {
+    position: absolute;
+    bottom: 20px;
+    right: 0px;
+    width: 152px;
+}
+#plot5 #info h6 {
+    color: #999;
+}
+#plot5 #info p {
+    font-size: 12px;
+    margin-bottom: 2px;
+    color: #aaa;
+    text-align: left;
+}
+#plot5 #info p span {
+    color: #eee;
+    margin-left: 10px;
 }
 
 #plot5 #index {
@@ -94,7 +108,7 @@
     outline: none;
     box-shadow: none;
     width: 200px;
-    background-color: #666;
+    background-color: #444650;
 }
 
 #plot5 #index input:hover {
@@ -171,6 +185,10 @@
                 <g id="path"></g>
                 <g id="axis"></g>
             </svg>
+            <div id="info">
+                <h5></h5>
+                <h6></h6>
+            </div>
         </div>
     </div>
     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
@@ -184,7 +202,6 @@ $(document).ready(function() {
     $('#nav #nav1').addClass('active');
 
     var dataset = eval({{dataset | safe}});
-    console.log(dataset);
     $('#count_sd').text(dataset['stations_count']['山东省']);
     $('#count_js').text(dataset['stations_count']['江苏省']);
     var aqi_index = dataset['json']['aqi_data']['timestamps'].length - 1;
@@ -642,7 +659,7 @@ $(document).ready(function() {
         return result;
     }
 
-    var option = {
+    var option4 = {
         animation: false,
         brush: {
             toolbox: [''],
@@ -816,7 +833,7 @@ $(document).ready(function() {
         }]
     };
 
-    generateGrids(option);
+    generateGrids(option4);
 
     var p5_width = 800;
     var p5_height = 480;
@@ -900,7 +917,7 @@ $(document).ready(function() {
             }
             p5_paths = d3.select("#plot5 svg g#path").selectAll('path').data(p5_data, function(d) {
                 return d;
-            })
+            });
             p5_max = dataset.json.aqi_data_details.data[p5_target][0];
             p5_curve1 = d3.svg.line().x(function(d) {
                 return parseInt(d[0] * (p5_width - p5_margins[1] - p5_margins[3])) + p5_margins[3];
@@ -1126,7 +1143,6 @@ $(document).ready(function() {
         if (delta == 0) {
             p5_scrolling += 1;
             setTimeout(function(){
-                console.log(p5_scrolling);
                 p5_scrolling -= 1;
                 if (p5_scrolling == 0) {
                     var tmp_data = [[], []];
@@ -1146,6 +1162,48 @@ $(document).ready(function() {
         }
 
         return false;
+    });
+    
+    $('#plot5 #path').on('mouseenter', 'path', function(event) {
+        p5_paths.attr('stroke-width', .5);
+        $(this).attr('stroke-width', 3);
+        var id = $(this).attr('id');
+        var flag = false;
+        for (var key in dataset.stations) {
+            var tmp = dataset.stations[key];
+            for (var k in tmp) {
+                if (k == id) {
+                    flag = true;
+                    $('#plot5 #info h5').text(tmp[k][3] + ' ' + id);
+                    $('#plot5 #info h6').text(key + ' ' + tmp[k][2]);
+                    $('#plot5 #info p').remove();
+                    for (var i = 0; i < dataset.json.aqi_average_station.length; i++) {
+                        if (dataset.json.aqi_average_station[i][8] == id) {
+                            var t = dataset.json.aqi_average_station[i];
+                            $('#plot5 #info').append('<p>AQI<span>' + t[0] + '</span>');
+                            $('#plot5 #info').append('<p>SO2<span>' + t[1] + '</span>');
+                            $('#plot5 #info').append('<p>NO2<span>' + t[2] + '</span>');
+                            $('#plot5 #info').append('<p>CO<span>' + t[3] + '</span>');
+                            $('#plot5 #info').append('<p>O3<span>' + t[4] + '</span>');
+                            $('#plot5 #info').append('<p>PM10<span>' + t[5] + '</span>');
+                            $('#plot5 #info').append('<p>PM2.5<span>' + t[6] + '</span>');
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (flag) {
+                break;
+            }
+        }
+    });
+
+    $('#plot5').on('mouseleave', 'svg', function(event) {
+        p5_paths.attr('stroke-width', 1);
+        $('#plot5 #info h5').text('');
+        $('#plot5 #info h6').text('');
+        $('#plot5 #info p').remove();
     });
 });
 </script>
