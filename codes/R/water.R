@@ -10,6 +10,8 @@ names(China)[1:2] <- c("经度", "纬度")
 # 水质监测站点分布
 qingyue_water_station <- qingyue_water_station[qingyue_water_station$经度 >=73.45 & qingyue_water_station$经度 <= 135.09 & qingyue_water_station$纬度 >= 6.319 & qingyue_water_station$纬度 <= 53.558, ]
 ggplot() + geom_polygon(data=China, aes(x=经度, y=纬度, group=id), color="grey", fill=NA) + theme_grey() + coord_map() + geom_point(data=qingyue_water_station, aes(x=经度,y=纬度,color=所属流域)) + labs(title='水质监测站点地理分布') + theme(text=element_text(family="Microsoft YaHei"), legend.title=element_blank())
+ggplot() + geom_bar(data=qingyue_water_station, aes(x=所属流域), stat="count") + labs(y='水质监测站点数量') + theme(text=element_text(family="Microsoft YaHei"), legend.title=element_blank(), axis.text.x=element_text(angle=90))
+
 # 水质PH值历史数据折线图
 qingyue_water_data <- qingyue_water_data[qingyue_water_data$PH值>=0 & qingyue_water_data$溶解氧>=0 & qingyue_water_data$氨氮>=0 & qingyue_water_data$高锰酸盐>=0 & qingyue_water_data$总有机碳>=0,]
 qingyue_water_data$时间 <- as.POSIXct(qingyue_water_data$时间, format="%Y-%m-%d %H:%M:%S")

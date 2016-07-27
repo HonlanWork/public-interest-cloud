@@ -9,6 +9,8 @@ ShandongJiangsu <- fortify(map_line[substr(as.character(map_line$ADCODE99),1,2) 
 names(ShandongJiangsu)[1:2] <- c("经度", "纬度")
 # 空气监测站点分布
 ggplot() + geom_polygon(data=ShandongJiangsu, aes(x=经度, y=纬度, group=id), color="grey", fill=NA) + theme_grey() + coord_map() + geom_point(data=qingyue_air_station, aes(x=经度,y=纬度,color=城市,shape=省份)) + labs(title='空气监测站点地理分布') + theme(text=element_text(family="Microsoft YaHei"), legend.title=element_blank())
+ggplot() + geom_bar(data=qingyue_air_station, aes(x=城市, fill=省份), stat="count") + labs(y='空气监测站点数量') + theme(text=element_text(family="Microsoft YaHei"), legend.title=element_blank(), axis.text.x=element_text(angle=90))
+
 # AQI历史数据折线图
 qingyue_air_data <- qingyue_air_data[qingyue_air_data$省份!='',]
 qingyue_air_data$发布时间 <- as.POSIXct(qingyue_air_data$发布时间, format="%Y-%m-%d %H:%M:%S")
