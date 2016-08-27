@@ -114,7 +114,34 @@ def water():
 # 污染
 @app.route('/pollution')
 def pollution():
-	return render_template('pollution.html')
+	dataset = {}
+
+	(db,cursor) = connectdb()
+
+	cursor.execute("select * from json_data where page=%s",['pollution'])
+	
+	json_data = cursor.fetchall()
+	tmp = {}
+	for item in json_data:
+		tmp[item['keyword']] = json.loads(item['json'])
+	dataset['json'] = tmp
+
+	cursor.execute("select companyname, lng, lat, city, national, industry from qingyue_pollution_company")
+	dataset['companies'] = cursor.fetchall()
+	tmp = []
+	cities = []
+	for item in dataset['companies']:
+		if not item['city'] in cities:
+			cities.append(item['city'])
+		item['lng'] = float(item['lng'])
+		item['lat'] = float(item['lat'])
+		if item['lng'] >=114.8 and item['lng'] <= 122.7 and item['lat'] >= 34.39 and item['lat'] <= 38.41:
+			tmp.append({'name': item['companyname'], 'value': [item['lng'], item['lat'], item['city']], 'info': [item['national'], item['industry']]})
+	dataset['companies'] = tmp
+	dataset['cities'] = cities
+
+	closedb(db,cursor)
+	return render_template('pollution.html', dataset=json.dumps(dataset))
 
 # 天气
 @app.route('/weather')

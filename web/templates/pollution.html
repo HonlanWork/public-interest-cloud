@@ -1,12 +1,247 @@
 {% extends 'layout.html' %} {% block style %}
 <style>
-	
+#plot11 {
+    width: 100%;
+    height: 320px;
+    background-color: #30323c !important;
+}
+
+#plot12 {
+    width: 100%;
+    height: 200px;
+    background-color: #30323c !important;
+}
+
+#plot13 {
+    width: 100%;
+    height: 200px;
+    background-color: #30323c !important;
+}
+
+#plot14 {
+    width: 100%;
+    height: 200px;
+    background-color: #30323c !important;
+}
 </style>
 {% endblock %} {% block body %}
-污染
+<h3 style="margin-left:20px;margin-bottom:0px;">污染企业数量远远 <span style="color:#d94e5d;">超出想象</span></h3>
+<div class="row">
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+        <div style="margin-left:30px;margin-top:40px;">
+            <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">1193</span>家污染企业</p>
+            <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">6641</span>处监测站点</p>
+            <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">3322</span>个监测项目</p>
+        </div>
+        <div id="plot11">
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            	<p style="color:#999;font-size:12px;text-align:left;margin-left:20%;margin-bottom:0px;">污染企业所属<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">类型</span></p>
+                <div id="plot12">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            	<p style="color:#999;font-size:12px;text-align:right;margin-right:20%;margin-bottom:0px;">污染监测项目所属<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">类型</span></p>
+                <div id="plot13">
+                </div>
+            </div>
+        </div>
+        <p style="color:#999;font-size:12px;text-align:center;margin-right:30px;margin-bottom:0px;">污染企业来自哪些<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">行业</span></p>
+        <div id="plot14"></div>
+    </div>
+</div>
 <script>
 $(document).ready(function() {
-	
+    $('#nav a').removeClass('active');
+    $('#nav #nav3').addClass('active');
+
+    var dataset = eval({{dataset | safe}});
+    console.log(dataset);
+
+    var tmp = d3.interpolate(d3.rgb(207, 91, 100), d3.rgb(231, 198, 57));
+    var colors = [];
+    for (var i = 0; i < dataset['cities'].length; i++) {
+        colors.push(tmp(i * parseFloat(1) / dataset['cities'].length));
+    }
+    var tmp = [
+        [],
+        []
+    ];
+    var p1_colors = {};
+    for (var i = 0; i < dataset['cities'].length; i++) {
+        tmp[0].push(dataset['cities'][i]);
+        tmp[1].push(colors[i]);
+        p1_colors[dataset['cities'][i]] = colors[i];
+    }
+
+    function generateColor(n) {
+        var tmp = d3.interpolate(d3.rgb(207, 91, 100), d3.rgb(231, 198, 57));
+        var colors = [];
+        for (var i = 0; i < n; i++) {
+            colors.push(tmp(i * parseFloat(1) / n));
+        }
+        return colors;
+    }
+
+    var plot11 = echarts.init(document.getElementById('plot11'), 'dark');
+    var option = {
+        visualMap: {
+            type: 'piecewise',
+            categories: tmp[0],
+            inRange: {
+                color: tmp[1]
+            },
+            outOfRange: {
+                opacity: 0
+            },
+            show: false
+        },
+        geo: [{
+            map: '山东',
+            label: {
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            roam: false,
+            itemStyle: {
+                normal: {
+                    areaColor: '#454853',
+                    borderColor: '#30323c'
+                },
+                emphasis: {
+                    areaColor: '#454853'
+                }
+            },
+        }],
+        series: [{
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: dataset['companies'],
+            symbolSize: 5,
+        }],
+        tooltip: {
+            trigger: 'item',
+            formatter: function(params) {
+                return '<span style="color:' + p1_colors[params.value[2]] + ';">' + params.value[2] + '</span><br/>' + params.name + '<br/>' + params.data.info[0] + '<br/>' + params.data.info[1];
+            }
+        },
+    };
+    plot11.setOption(option);
+
+    var plot12 = echarts.init(document.getElementById('plot12'), 'dark');
+    option = {
+        title: {
+            show: false
+        },
+        color: generateColor(dataset['json']['pollution_basic']['company_category'].length),
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series: [{
+            name: '污染企业所属类型',
+            type: 'pie',
+            radius: '60%',
+            center: ['50%', '50%'],
+            data: dataset['json']['pollution_basic']['company_category'],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            },
+        }]
+    };
+    plot12.setOption(option);
+
+    var plot13 = echarts.init(document.getElementById('plot13'), 'dark');
+    option = {
+        title: {
+            show: false
+        },
+        color: generateColor(dataset['json']['pollution_basic']['item_category'].length),
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        series: [{
+            name: '污染监测项目所属类型',
+            type: 'pie',
+            radius: '60%',
+            center: ['50%', '50%'],
+            data: dataset['json']['pollution_basic']['item_category'],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
+    plot13.setOption(option);
+
+    var plot14 = echarts.init(document.getElementById('plot14'), 'dark');
+    option = {
+    	grid: {
+    		x: 40,
+    		y: 20,
+    		x1: 0,
+    		y1: 0
+    	},
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        xAxis: [{
+            type: 'category',
+            data: dataset['json']['pollution_basic']['company_industry'][0],
+            boundaryGap: true,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false
+            },
+        }],
+        yAxis: [{
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                margin: 16
+            }
+        }],
+        series: [{
+            name: '污染企业所属行业',
+            type: 'bar',
+            data: dataset['json']['pollution_basic']['company_industry'][1],
+        }]
+    };
+    plot14.setOption(option);
+
 });
 </script>
 {% endblock %}

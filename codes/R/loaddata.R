@@ -32,3 +32,4 @@ qingyue_pollution_data <- read.csv("../../data/上海青悦环保数据2/山东�
 qingyue_pollution_data$ID <- factor(qingyue_pollution_data$ID)
 qingyue_pollution_data$监测点ID <- factor(qingyue_pollution_data$监测点ID)
 qingyue_pollution_data$监测项目ID <- factor(qingyue_pollution_data$监测项目ID)
+

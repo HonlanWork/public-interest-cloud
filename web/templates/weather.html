@@ -6,7 +6,11 @@
 天气
 <script>
 $(document).ready(function() {
-	
+	$('#nav a').removeClass('active');
+    $('#nav #nav4').addClass('active');
+
+    var dataset = eval({{dataset | safe}});
+    console.log(dataset);
 });
 </script>
 {% endblock %}
