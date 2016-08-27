@@ -1,5 +1,6 @@
 .DS_Store
 *.pyc
 /data/
+/codes/
 /web/config.py
 /web/venv/
