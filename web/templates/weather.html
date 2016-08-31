@@ -1,9 +1,119 @@
 {% extends 'layout.html' %} {% block style %}
 <style>
-	
+#plot1 {
+	width: 980px;
+	height: 660px;
+	position: relative;
+	margin: 0 auto;
+}
+#plot1 #img1, #img2, #img3, #img4 {
+	position: absolute;
+	z-index: -999;
+}
+#plot1 #img1 {
+	left: 40px;
+	top: 30px;
+	height: 250px;
+}
+#plot1 #img2 {
+	right: 40px;
+	top: 30px;
+	height: 250px;
+}
+#plot1 #img3 {
+	left: 60px;
+	bottom: 30px;
+	width: 300px;
+}
+#plot1 #img4 {
+	right: 60px;
+	bottom: 30px;
+	width: 300px;
+}
+#plot1 circle.rain:hover, #plot1 circle.aqi:hover {
+	cursor: pointer;
+}
+#clear {
+	background-color: #444650;
+	color: #fff;
+	width: 120px;
+	position: absolute;
+	left: 50%;
+	top: 40px;
+	margin-left: -60px;
+	padding: 10px 12px;
+	text-align: center;
+	border-radius: 4px;
+	z-index: 999;
+	border: 1px solid #444650;
+	transition: color, background-color .3s;
+    -o-transition: color, background-color .3s;
+    -ms-transition: color, background-color .3s;
+    -moz-transition: color, background-color .3s;
+    -webkit-transition: color, background-color .3s;
+}
+#clear:hover {
+	background: #30323c;
+	border-color: #f2f2f2;
+	cursor: pointer;
+}
+#plot1 #plot11 {
+	width: 400px;
+	height: 200px;
+    background-color: transparent !important;
+    position: absolute;
+    left: 50%;
+    margin-left: -200px;
+    bottom: 250px;
+	z-index: 998;
+	z-index: 9999;
+}
+#plot1 #legend3 {
+	z-index: 999;
+	position: absolute;
+	left: 50%;
+	top: 185px;
+	margin-left: -107px;
+	display: none;
+}
 </style>
 {% endblock %} {% block body %}
-天气
+<h3 style="text-align:center;margin-bottom:0px;">一阵雨 让空气更 <span style="color:#d94e5d;">清新</span></h3>
+<div style="position:relative;height:40px;">
+	<div style="display:inline-block;position:absolute;top:0;left:4%;">
+		<p style="margin-left:57px;">降雨频率</p>
+		<div>
+			<span style="font-size:12px;margin-right:8px;">高</span>
+			<img src="{{url_for('static', filename='img/legend1.png')}}" alt="" style="width:120px;height:20px;">
+			<span style="font-size:12px;margin-left:8px;">低</span>
+		</div>
+	</div>
+	<div id="clear">清除选择</div>
+	<div style="display:inline-block;position:absolute;top:0;right:4%;">
+		<p style="margin-left:54px;">空气质量</p>
+		<div>
+			<span style="font-size:12px;margin-right:8px;">优</span>
+			<img src="{{url_for('static', filename='img/legend2.png')}}" alt="" style="width:120px;height:20px;">
+			<span style="font-size:12px;margin-left:8px;">差</span>
+		</div>
+	</div>
+</div>
+<div id="plot1">
+	<img src="{{url_for('static', filename='img/shandong.png')}}" alt="" id="img1">
+	<img src="{{url_for('static', filename='img/shandong1.png')}}" alt="" id="img2">
+	<img src="{{url_for('static', filename='img/jiangsu.png')}}" alt="" id="img3">
+	<img src="{{url_for('static', filename='img/jiangsu1.png')}}" alt="" id="img4">
+	<svg width="980" height="660">
+		<g></g>
+	</svg>
+	<div id="legend3">
+		<span style="width:40px;height:12px;background-color:rgba(80, 163, 186, 0.8);display:inline-block;margin-right:8px;"></span>
+		<span style="font-size:12px;color:#999;">降雨量</span>
+		<span style="width:40px;height:12px;background-color:rgba(217, 78, 93, 0.8);display:inline-block;margin-left:20px;margin-right:8px;"></span>
+		<span style="font-size:12px;color:#999;">空气质量</span>
+	</div>
+	<div id="plot11"></div>
+</div>
 <script>
 $(document).ready(function() {
 	$('#nav a').removeClass('active');
@@ -11,6 +121,435 @@ $(document).ready(function() {
 
     var dataset = eval({{dataset | safe}});
     console.log(dataset);
+
+    var plot1_width = 980;
+    var plot1_height = 660;
+    var plot1_margins = [30, 40, 30, 40];
+    var plot1_rain_colors = d3.interpolate(d3.rgb(234, 199, 54), d3.rgb(80, 163, 186));
+    var plot1_aqi_colors = d3.interpolate(d3.rgb(234, 199, 54), d3.rgb(217, 78, 93));
+    var width1 = 372.7;
+    var height1 = 250;
+    var minLat1 = 34.39;
+    var maxLat1 = 38.41;
+    var minLng1 = 114.9;
+    var maxLng1 = 122.8;
+    var width2 = 300;
+    var height2 = 312.3;
+    var minLat2 = 30.76;
+    var maxLat2 = 35.13;
+    var minLng2 = 116.1;
+    var maxLng2 = 121.6;
+
+    var plot1_rain_data = [];
+    for (var i = 0; i < dataset.json.rain_stat.length; i++) {
+    	plot1_rain_data.push(i);
+    }
+    var plot1_rain = d3.select('#plot1 svg g').selectAll('circle.rain').data(plot1_rain_data, function(d){
+    	return d;
+    });
+    plot1_rain.enter().append('circle').attr({
+    	class: function(d){
+    		var tmp = dataset.json.rain_stat[d];
+    		if (tmp[4] == '山东') {
+    			return 'rain shandong';
+    		}
+    		else if (tmp[4] == '江苏') {
+    			return 'rain jiangsu';
+    		}
+    	},
+    	r: function(d){
+    		var tmp = dataset.json.rain_stat[d];
+    		return Math.ceil(Math.sqrt(tmp[3]) * 8 + 1);
+    	},
+    	fill: function(d){
+    		var tmp = dataset.json.rain_stat[d];
+    		return plot1_rain_colors(tmp[2]);
+    	},
+    	cx: function(d){
+    		var tmp = dataset.json.rain_stat[d];
+    		if (tmp[4] == '山东') {
+    			return (tmp[0] - minLng1) / (maxLng1 - minLng1) * width1 + plot1_margins[3];
+    		}
+    		else if (tmp[4] == '江苏') {
+    			return (tmp[0] - minLng2) / (maxLng2 - minLng2) * width2 + plot1_margins[3];
+    		}
+    	},
+    	cy: function(d){
+    		var tmp = dataset.json.rain_stat[d];
+    		if (tmp[4] == '山东') {
+    			return (maxLat1 - tmp[1]) / (maxLat1 - minLat1) * height1 + plot1_margins[0];
+    		}
+    		else if (tmp[4] == '江苏') {
+    			return plot1_height - (tmp[1] - minLat2) / (maxLat2 - minLat2) * height2 - plot1_margins[2];
+    		}
+    	},
+    	name: function(d){
+    		return dataset.json.rain_stat[d][5];
+    	}
+    });
+   
+    var plot1_aqi_data = [];
+    for (var i = 0; i < dataset.json.rain_aqi.length; i++) {
+    	plot1_aqi_data.push(i);
+    }
+    var plot1_aqi = d3.select('#plot1 svg g').selectAll('circle.aqi').data(plot1_aqi_data, function(d){
+    	return d;
+    });
+    plot1_aqi.enter().append('circle').attr({
+    	class: function(d){
+    		var tmp = dataset.json.rain_aqi[d];
+    		if (tmp[3] == '山东省') {
+    			return 'aqi shandong';
+    		}
+    		else if (tmp[3] == '江苏省') {
+    			return 'aqi jiangsu';
+    		}
+    	},
+    	r: function(d){
+    		return 3;
+    	},
+    	fill: function(d){
+    		var tmp = dataset.json.rain_aqi[d];
+    		return plot1_aqi_colors(tmp[2]);
+    	},
+    	cx: function(d){
+    		var tmp = dataset.json.rain_aqi[d];
+    		if (tmp[3] == '山东省') {
+    			return plot1_width - (tmp[0] - minLng1) / (maxLng1 - minLng1) * width1 - plot1_margins[1];
+    		}
+    		else if (tmp[3] == '江苏省') {
+    			return plot1_width - (tmp[0] - minLng2) / (maxLng2 - minLng2) * width2 - plot1_margins[1];
+    		}
+    	},
+    	cy: function(d){
+    		var tmp = dataset.json.rain_aqi[d];
+    		if (tmp[3] == '山东省') {
+    			return (maxLat1 - tmp[1]) / (maxLat1 - minLat1) * height1 + plot1_margins[0];
+    		}
+    		else if (tmp[3] == '江苏省') {
+    			return plot1_height - (tmp[1] - minLat2) / (maxLat2 - minLat2) * height2 - plot1_margins[2];
+    		}
+    	},
+    	name: function(d){
+    		return dataset.json.rain_aqi[d][4];
+    	}
+    });
+
+	var rect_width = 50.0;
+	var rect_height = 40.0;
+    var plot1_rain_rect = d3.select('#plot1 svg g').selectAll('rect.rain').data([1], function(d){
+    	return d;
+    })
+    plot1_rain_rect.enter().append('rect').attr({
+    	x: plot1_margins[3] + width1 / 2 - rect_width / 2,
+    	y: plot1_margins[0] + height1 / 2 - rect_height / 2,
+    	width: rect_width,
+    	height: rect_height,
+    	'stroke-width': 2,
+    	stroke: '#eee',
+    	fill: 'rgba(0,0,0,0)',
+    	class: 'rain'
+    });
+    var plot1_aqi_rect = d3.select('#plot1 svg g').selectAll('rect.aqi').data([1], function(d){
+    	return d;
+    })
+    plot1_aqi_rect.enter().append('rect').attr({
+    	x: plot1_width - plot1_margins[1] - width1 / 2 - rect_width / 2,
+    	y: plot1_margins[0] + height1 / 2 - rect_height / 2,
+    	width: rect_width,
+    	height: rect_height,
+    	'stroke-width': 2,
+    	stroke: '#eee',
+    	fill: 'rgba(0,0,0,0)',
+    	class: 'aqi'
+    });
+
+    function moveTo(source, name, x, y, lng1, lng2, lat1, lat2){
+    	plot11_option.series = [];
+		plot11_option.yAxis[0].axisLabel.show = true;
+		plot11_option.yAxis[1].axisLabel.show = true;
+    	if (source == 'left') {
+    		plot1_rain_rect.transition().duration(600).attr({
+	    		x: x - rect_width / 2,
+	    		y: y - rect_height / 2
+	    	});
+	    	plot1_aqi_rect.transition().duration(600).attr({
+	    		x: plot1_width - plot1_margins[1] - (x - plot1_margins[3]) - rect_width / 2,
+	    		y: y - rect_height / 2
+	    	});
+
+    		var matched = {};
+    		for(var key in dataset.json.rain_filter.aqis) {
+    			var value = dataset.json.rain_filter.aqis[key];
+    			if (value['lng'] >= lng1 && value['lng'] <= lng2 && value['lat'] >= lat1 && value['lat'] <= lat2) {
+    				matched[value['name']] = 1;
+
+    				var flag = false;
+    				for (var i = 0; i < dataset.json.rain_filter.aqis[value['name']].data.length; i++) {
+    					if (dataset.json.rain_filter.aqis[value['name']].data[i] != 0) {
+    						flag = true;
+    						break;
+    					}
+    				}
+    				if (flag) {
+    					plot11_option.series.push({
+				            name: value['name'] + ' 空气质量',
+				            type: 'line',
+				            symbol: 'none',
+				            showSymbol: false,
+				            smooth: true,
+				            data: dataset.json.rain_filter.aqis[value['name']].data,
+				            yAxisIndex: 1,
+				            lineStyle: {
+				            	normal: {
+				            		color: 'rgba(217, 78, 93, 0.3)'
+				            	}
+				            }
+				        });
+    				}
+    			}
+    			else {
+    				matched[value['name']] = 0;
+    			}
+    		}
+    		plot11_option.series.push({
+	            name: name + ' 降雨量',
+	            type: 'line',
+	            symbol: 'none',
+	            showSymbol: false,
+	            smooth: true,
+	            data: dataset.json.rain_filter.rains[name].data,
+	            lineStyle: {
+	            	normal: {
+	            		color: 'rgba(80, 163, 186, 0.5)'
+	            	}
+	            }
+	        });
+    		plot11 = echarts.init(document.getElementById('plot11'), 'dark');
+    		plot11.setOption(plot11_option);
+    		plot1_aqi.transition().duration(600).attr('fill-opacity', function(d){
+    			if (matched[dataset.json.rain_aqi[d][4]] == 1) {
+    				return 1;
+    			}
+    			else {
+    				return 0.1;
+    			}
+    		});
+    	}
+    	else if (source == 'right') {
+    		plot1_rain_rect.transition().duration(600).attr({
+	    		x: plot1_width - plot1_margins[1] - (x - plot1_margins[3]) - rect_width / 2,
+	    		y: y - rect_height / 2
+	    	});
+	    	plot1_aqi_rect.transition().duration(600).attr({
+	    		x: x - rect_width / 2,
+	    		y: y - rect_height / 2
+	    	});
+
+    		var matched = {};
+    		for(var key in dataset.json.rain_filter.rains) {
+    			var value = dataset.json.rain_filter.rains[key];
+    			if (value['lng'] >= lng1 && value['lng'] <= lng2 && value['lat'] >= lat1 && value['lat'] <= lat2) {
+    				matched[value['name']] = 1;
+
+    				var flag = false;
+    				for (var i = 0; i < dataset.json.rain_filter.rains[value['name']].data.length; i++) {
+    					if (dataset.json.rain_filter.rains[value['name']].data[i] != 0) {
+    						flag = true;
+    						break;
+    					}
+    				}
+    				if (flag) {
+    					plot11_option.series.push({
+				            name: value['name'] + ' 降雨量',
+				            type: 'line',
+				            symbol: 'none',
+				            showSymbol: false,
+				            smooth: true,
+				            data: dataset.json.rain_filter.rains[value['name']].data,
+				            lineStyle: {
+				            	normal: {
+				            		color: 'rgba(80, 163, 186, 0.3)'
+				            	}
+				            }
+				        });
+    				}
+    			}
+    			else {
+    				matched[value['name']] = 0;
+    			}
+    		}
+    		plot11_option.series.push({
+	            name: name + ' 空气质量',
+	            type: 'line',
+	            symbol: 'none',
+	            showSymbol: false,
+	            smooth: true,
+	            data: dataset.json.rain_filter.aqis[name].data,
+	            lineStyle: {
+	            	normal: {
+	            		color: 'rgba(217, 78, 93, 0.5)'
+	            	}
+	            },
+	            yAxisIndex: 1,
+	        });
+    		plot11 = echarts.init(document.getElementById('plot11'), 'dark');
+    		plot11.setOption(plot11_option);
+    		plot1_rain.transition().duration(600).attr('fill-opacity', function(d){
+    			if (matched[dataset.json.rain_stat[d][5]] == 1) {
+    				return 1;
+    			}
+    			else {
+    				return 0.1;
+    			}
+    		});
+    	}
+    }
+
+    $('#plot1 svg g').on('click', 'circle.rain', function(event) {
+    	$('#legend3').fadeIn(600);
+
+    	var name = $(this).attr('name');
+    	plot1_rain.transition().duration(600).attr('fill-opacity', function(d){
+    		if (dataset.json.rain_stat[d][5] == name) {
+    			return 1;
+    		}
+    		else {
+    			return 0.1;
+    		}
+    	});
+
+    	var x = $(this).attr('cx');
+    	var y = $(this).attr('cy');
+    	var lng1, lng2, lat1, lat2;
+    	if ($(this).attr('class').indexOf('shandong') >= 0) {
+    		lng1 = (x - plot1_margins[3]) / width1 * (maxLng1 - minLng1) + minLng1 - rect_width / 2 / width1 * (maxLng1 - minLng1);
+    		lng2 = (x - plot1_margins[3]) / width1 * (maxLng1 - minLng1) + minLng1 + rect_width / 2 / width1 * (maxLng1 - minLng1);
+    		lat1 = maxLat1 - (y - plot1_margins[0]) / height1 * (maxLat1 - minLat1) - rect_height / 2 / height1 * (maxLat1 - minLat1);
+    		lat2 = maxLat1 - (y - plot1_margins[0]) / height1 * (maxLat1 - minLat1) + rect_height / 2 / height1 * (maxLat1 - minLat1);
+    	}
+    	else if ($(this).attr('class').indexOf('jiangsu') >= 0) {
+    		lng1 = (x - plot1_margins[3]) / width2 * (maxLng2 - minLng2) + minLng2 - rect_width / 2 / width2 * (maxLng2 - minLng2);
+    		lng2 = (x - plot1_margins[3]) / width2 * (maxLng2 - minLng2) + minLng2 + rect_width / 2 / width2 * (maxLng2 - minLng2);
+    		lat1 = minLat2 + (plot1_height - plot1_margins[2] - y) / height2 * (maxLat2 - minLat2) - rect_height / 2 / height2 * (maxLat2 - minLat2);
+    		lat2 = minLat2 + (plot1_height - plot1_margins[2] - y) / height2 * (maxLat2 - minLat2) + rect_height / 2 / height2 * (maxLat2 - minLat2);
+    	}
+    	moveTo('left', name, x, y, lng1, lng2, lat1, lat2);
+    });
+
+	$('#plot1 svg g').on('click', 'circle.aqi', function(event) {
+    	$('#legend3').fadeIn(600);
+
+    	var name = $(this).attr('name');
+    	console.log(name);
+    	plot1_aqi.transition().duration(600).attr('fill-opacity', function(d){
+    		if (dataset.json.rain_aqi[d][4] == name) {
+    			return 1;
+    		}
+    		else {
+    			return 0.1;
+    		}
+    	});
+
+    	var x = $(this).attr('cx');
+    	var y = $(this).attr('cy');
+    	var lng1, lng2, lat1, lat2;
+    	if ($(this).attr('class').indexOf('shandong') >= 0) {
+    		lng1 = (plot1_width - plot1_margins[1] - x) / width1 * (maxLng1 - minLng1) + minLng1 - rect_width / 2 / width1 * (maxLng1 - minLng1);
+    		lng2 = (plot1_width - plot1_margins[1] - x) / width1 * (maxLng1 - minLng1) + minLng1 + rect_width / 2 / width1 * (maxLng1 - minLng1);
+    		lat1 = maxLat1 - (y - plot1_margins[0]) / height1 * (maxLat1 - minLat1) - rect_height / 2 / height1 * (maxLat1 - minLat1);
+    		lat2 = maxLat1 - (y - plot1_margins[0]) / height1 * (maxLat1 - minLat1) + rect_height / 2 / height1 * (maxLat1 - minLat1);
+    	}
+    	else if ($(this).attr('class').indexOf('jiangsu') >= 0) {
+    		lng1 = (plot1_width - plot1_margins[1] - x) / width2 * (maxLng2 - minLng2) + minLng2 - rect_width / 2 / width2 * (maxLng2 - minLng2);
+    		lng2 = (plot1_width - plot1_margins[1] - x) / width2 * (maxLng2 - minLng2) + minLng2 + rect_width / 2 / width2 * (maxLng2 - minLng2);
+    		lat1 = minLat2 + (plot1_height - plot1_margins[2] - y) / height2 * (maxLat2 - minLat2) - rect_height / 2 / height2 * (maxLat2 - minLat2);
+    		lat2 = minLat2 + (plot1_height - plot1_margins[2] - y) / height2 * (maxLat2 - minLat2) + rect_height / 2 / height2 * (maxLat2 - minLat2);
+    	}
+    	moveTo('right', name, x, y, lng1, lng2, lat1, lat2);
+    });
+
+	$('#clear').click(function(event) {
+    	$('#legend3').fadeOut(600);
+
+		plot1_rain.transition().duration(600).attr('fill-opacity', 1);
+		plot1_aqi.transition().duration(600).attr('fill-opacity', 1);
+		plot1_rain_rect.transition().duration(600).attr({
+	    	x: plot1_margins[3] + width1 / 2 - rect_width / 2,
+	    	y: plot1_margins[0] + height1 / 2 - rect_height / 2,
+	    });
+	    plot1_aqi_rect.transition().duration(600).attr({
+	    	x: plot1_width - plot1_margins[1] - width1 / 2 - rect_width / 2,
+    		y: plot1_margins[0] + height1 / 2 - rect_height / 2,
+	    });
+	    plot11_option.yAxis[0].axisLabel.show = false;
+    	plot11_option.yAxis[1].axisLabel.show = false;
+    	plot11_option.series = [];
+    	plot11 = echarts.init(document.getElementById('plot11'), 'dark');
+    	plot11.setOption(plot11_option);
+	});
+
+	var plot11 = echarts.init(document.getElementById('plot11'), 'dark');
+    var plot11_option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        grid: {
+            left: 40,
+            right: 50,
+            top: 25,
+            bottom: 10
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false
+            },
+            data: dataset.json.rain_filter.times
+        },
+        yAxis: [{
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                margin: 12,
+                show: false
+            },
+        }, {
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                margin: 12,
+                show: false
+            }
+        }],
+        series: []
+    };
+    plot11.setOption(plot11_option);
 });
 </script>
 {% endblock %}

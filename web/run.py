@@ -146,8 +146,20 @@ def pollution():
 # 天气
 @app.route('/weather')
 def weather():
-	return render_template('weather.html')
+	dataset = {}
 
+	(db,cursor) = connectdb()
+
+	cursor.execute("select * from json_data where page=%s",['weather'])
+	
+	json_data = cursor.fetchall()
+	tmp = {}
+	for item in json_data:
+		tmp[item['keyword']] = json.loads(item['json'])
+	dataset['json'] = tmp
+
+	closedb(db,cursor)
+	return render_template('weather.html', dataset=json.dumps(dataset))
 
 if __name__ == '__main__':
 	app.run(debug=True)

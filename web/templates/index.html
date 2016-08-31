@@ -202,6 +202,8 @@ $(document).ready(function() {
     $('#nav #nav1').addClass('active');
 
     var dataset = eval({{dataset | safe}});
+    console.log(dataset);
+
     $('#count_sd').text(dataset['stations_count']['山东省']);
     $('#count_js').text(dataset['stations_count']['江苏省']);
     var aqi_index = dataset['json']['aqi_data']['timestamps'].length - 1;
@@ -1205,6 +1207,7 @@ $(document).ready(function() {
         $('#plot5 #info h6').text('');
         $('#plot5 #info p').remove();
     });
+    
 });
 </script>
 {% endblock %}
