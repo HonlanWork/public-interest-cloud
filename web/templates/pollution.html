@@ -20,7 +20,7 @@
 
 #plot14 {
     width: 100%;
-    height: 200px;
+    height: 170px;
     background-color: #30323c !important;
 }
 </style>
@@ -28,10 +28,11 @@
 <h3 style="margin-left:20px;margin-bottom:0px;">污染企业数量远远 <span style="color:#d94e5d;">超出想象</span></h3>
 <div class="row">
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
-        <div style="margin-left:30px;margin-top:40px;">
-            <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">1193</span>家污染企业</p>
+        <div style="margin-left:30px;margin-top:30px;">
+            <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-right:5px;">1193</span>家污染企业</p>
             <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">6641</span>处监测站点</p>
             <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;"><span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">3322</span>个监测项目</p>
+            <p style="color:#999;font-size:12px;margin-bottom:5px;display:inline-block;margin-right:10px;">颜色代表污染企业所属<span style="color:rgb(231, 198, 57);font-size:16px;margin-left:5px;margin-right:5px;">城市</span></p>
         </div>
         <div id="plot11">
         </div>
@@ -192,10 +193,10 @@ $(document).ready(function() {
     var plot14 = echarts.init(document.getElementById('plot14'), 'dark');
     option = {
     	grid: {
-    		x: 40,
-    		y: 20,
-    		x1: 0,
-    		y1: 0
+    		left: 40,
+    		top: 20,
+    		right: 0,
+    		bottom: 10
     	},
         tooltip: {
             trigger: 'axis',

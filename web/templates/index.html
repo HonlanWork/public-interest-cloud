@@ -163,9 +163,9 @@
         </div>
     </div>
 </div>
-<h3 style="text-align:center;margin-top:60px;margin-bottom:40px;">你可能不知道这些 <span style="color:#d94e5d;">关联</span></h3>
+<h3 style="text-align:center;margin-top:60px;margin-bottom:10px;">你可能不知道这些 <span style="color:#d94e5d;">关联</span></h3>
 <div id="plot4"></div>
-<h3 style="text-align:right;margin-top:60px;margin-bottom:40px;">空气监测站点详细 <span style="color:#d94e5d;">数据</span></h3>
+<h3 style="text-align:right;margin-top:60px;margin-bottom:40px;margin-right:20px;">空气监测站点详细 <span style="color:#d94e5d;">数据</span></h3>
 <div class="row">
     <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
         <div id="plot5">
@@ -322,7 +322,7 @@ $(document).ready(function() {
 
     var plot2 = echarts.init(document.getElementById('plot2'), 'dark');
     var option = {
-        color: ['#50a3ba', '#eac736'],
+        color: ['#eac736', '#50a3ba'],
         tooltip: {
             trigger: 'axis'
         },
@@ -402,7 +402,7 @@ $(document).ready(function() {
 
     var plot31 = echarts.init(document.getElementById('plot31'), 'dark');
     var option = {
-        color: ['#8dc3d2', '#68b0c4', '#50a3ba', '#3d869a', '#2e6676', '#25515d'],
+        color: ['#f4e192', '#f0d874', '#edd055', '#eac736', '#d7b116', '#a88b12'],
         tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -449,7 +449,7 @@ $(document).ready(function() {
     plot31.setOption(option);
     var plot32 = echarts.init(document.getElementById('plot32'), 'dark');
     var option = {
-        color: ['#f4e192', '#f0d874', '#edd055', '#eac736', '#d7b116', '#a88b12'],
+        color: ['#8dc3d2', '#68b0c4', '#50a3ba', '#3d869a', '#2e6676', '#25515d'],        
         tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -684,7 +684,7 @@ $(document).ready(function() {
             top: 0,
             left: 'center',
             inRange: {
-                color: ['#50a3ba', '#eac736']
+                color: ['#eac736', '#50a3ba'],
             },
             seriesIndex: [0],
             textStyle: {
@@ -693,6 +693,7 @@ $(document).ready(function() {
             outOfRange: {
                 opacity: 0
             },
+            show: false
         },
         parallelAxis: [{
             dim: 0,
@@ -818,7 +819,7 @@ $(document).ready(function() {
             symbolSize: 4,
             itemStyle: {
                 normal: {
-                    color: '#50a3ba'
+                    color: '#eac736'                    
                 }
             }
         }, {
@@ -829,7 +830,7 @@ $(document).ready(function() {
             symbolSize: 4,
             itemStyle: {
                 normal: {
-                    color: '#eac736'
+                    color: '#50a3ba'
                 }
             }
         }]
@@ -961,9 +962,9 @@ $(document).ready(function() {
                 stroke: function(d, i) {
                     var opacity = 0.5 * parseFloat(i) / p5_length + 0.4
                     if (dataset.json.aqi_data_details.data[p5_target][1][i][1] == '山东省') {
-                        return '#50a3ba';
-                    } else {
                         return '#eac736';
+                    } else {
+                        return '#50a3ba';
                     }
                 },
                 d: function(d, i) {
@@ -1021,7 +1022,7 @@ $(document).ready(function() {
         var option = {
             visualMap: {
                 min: 0,
-                max: 400,
+                max: 300,
                 calculable: true,
                 splitNumber: 5,
                 inRange: {
