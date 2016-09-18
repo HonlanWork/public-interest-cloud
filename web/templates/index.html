@@ -913,6 +913,7 @@ $(document).ready(function() {
             dataset.json.aqi_data_details = result;
             p5_target = 'aqi';
             p5_length = dataset.json.aqi_data_details.data[p5_target][1].length;
+            console.log(p5_length);
             p5_column = dataset.json.aqi_data_details.timestamps.length;
             p5_data = [];
             for (var i = 0; i < p5_length; i++) {

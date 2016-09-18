@@ -23,9 +23,222 @@
     height: 170px;
     background-color: #30323c !important;
 }
+
+#plot2 {
+    width: 100%;
+    height: 400px;
+    padding: 60px 60px 70px 60px;
+    position: relative;
+}
+#plot2 svg#plot21 {
+    position: absolute;
+    top: 60px;
+    right: 50%;
+    margin-right: 40px;
+}
+#plot2 svg#plot22 {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    margin-left: 40px;
+}
+
+#plot2 #index {
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    z-index: 99;
+}
+#plot2 #index2 {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    z-index: 99;
+}
+
+#plot2 #index .cell, #plot2 #index2 .cell {
+    padding: 8px;
+    padding-left: 12px;
+    color: rgb(90, 103, 121);
+    background-color: #fff;
+    font-size: 12px;
+    z-index: 999;
+    text-align: left;
+    display: none;
+}
+
+#plot2 #index .cell:nth-of-type(2n), #plot2 #index2 .cell:nth-of-type(2n) {
+    background-color: rgb(250, 251, 253);
+}
+
+#plot2 #index .cell:nth-of-type(2n + 1), #plot2 #index2 .cell:nth-of-type(2n + 1) {
+    background-color: rgb(255, 255, 255);
+}
+
+#plot2 #index .cell:last-child, #plot2 #index2 .cell:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+#plot2 #index .cell:hover, #plot2 #index2 .cell:hover {
+    cursor: pointer;
+    background-color: #50a3ba;
+    color: #fff !important;
+}
+
+#plot2 #index input, #plot2 #index2 input {
+    color: #fff;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: 200px;
+    background-color: #444650;
+}
+
+#plot2 #index input:hover, #plot2 #index2 input:hover {
+    cursor: pointer;
+}
+
+#plot2 #index.active input, #plot2 #index2.active input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#plot2 svg#plot21 g circle:hover, #plot2 svg#plot22 g circle:hover {
+    cursor: pointer;
+}
+
+#plot2 #info, #plot2 #info2 {
+    position: absolute;
+    border: 1px solid #ddd;
+    background-color: rgba(20, 20, 20, 0.8);
+    padding: 15px;
+    max-width: 400px;
+    color: #ddd;
+    font-size: 12px;
+    text-align: left;
+    display: none;
+    z-index: 999;
+}
+#plot2 #info h5, #plot2 #info2 h5 {
+    margin-top: 0;
+}
+#plot2 #info h6, #plot2 #info2 h6 {
+    color: #999;
+}
+#plot2 #info p, #plot2 #info2 p {
+    font-size: 12px;
+    margin-bottom: 2px;
+    color: #aaa;
+    text-align: left;
+}
+#plot2 #info p:last-child, #plot2 #info2 p:last-child {
+    margin-bottom: 0;
+}
+#plot2 #info p span, #plot2 #info2 p span {
+    color: #eee;
+    margin-left: 10px;
+}
+
+#plot31 {
+    position: relative;
+    text-align: center;
+}
+
+#plot31 circle:hover {
+    cursor: pointer;
+}
+
+#clear {
+    background-color: #444650;
+    color: #fff;
+    width: 120px;
+    position: absolute;
+    right: 0px;
+    bottom: 100px;
+    padding: 10px 12px;
+    text-align: center;
+    border-radius: 4px;
+    z-index: 999;
+    border: 1px solid #444650;
+    transition: color, background-color .3s;
+    -o-transition: color, background-color .3s;
+    -ms-transition: color, background-color .3s;
+    -moz-transition: color, background-color .3s;
+    -webkit-transition: color, background-color .3s;
+}
+
+#clear:hover {
+    background: #30323c;
+    border-color: #f2f2f2;
+    cursor: pointer;
+}
+
+#plot32 {
+    width: 100%;
+    height: 250px;
+    margin-top: 100px;
+    background-color: #30323c !important;
+}
+
+#legend {
+    position: absolute;
+    top: -40px;
+    z-index: 999;
+    margin-left: -115px;
+    left: 50%;
+}
+
+#plot4 #controller {
+    position: absolute;
+    display: block;
+    left: 20px;
+    top: 0px;
+    font-size: 30px;
+    color: #f2f2f2;
+}
+#plot4 #controller:hover {
+    cursor: pointer;
+}
+
+#plot4 #date {
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    margin-left: -67px;
+    font-size: 20px;
+    color: rgb(231,198,57);
+}
+
+#plot4 {
+    width: 100%;
+    height: 340px;
+    padding: 40px 60px 0px 60px;
+    position: relative;
+}
+
+#plot4 svg#plot41 {
+    position: absolute;
+    top: 40px;
+    right: 50%;
+    margin-right: 40px;
+}
+#plot4 svg#plot42 {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    margin-left: 40px;
+}
+
+#plot51, #plot52 {
+    width: 100%;
+    height: 200px;
+    background-color: #30323c !important;
+}
 </style>
 {% endblock %} {% block body %}
-<h3 style="margin-left:20px;margin-bottom:0px;">污染企业数量远远 <span style="color:#d94e5d;">超出想象</span></h3>
+<h3 style="margin-left:20px;margin-bottom:0px;">污染企业数量远远 <span style="color:#d94e5d;margin-left:5px;">超出想象</span></h3>
 <div class="row">
     <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
         <div style="margin-left:30px;margin-top:30px;">
@@ -52,6 +265,117 @@
         </div>
         <p style="color:#999;font-size:12px;text-align:center;margin-right:30px;margin-bottom:0px;">污染企业来自哪些<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">行业</span></p>
         <div id="plot14"></div>
+    </div>
+</div>
+<h3 style="margin-top:60px;text-align:center;margin-bottom:20px;">各类污染如何影响 <span style="color:#d94e5d;">空气质量</span></h3>
+<div id="plot2">
+    <div id="index">
+        <input type="text" class="form-control" value="全部污染 1165">
+    </div>
+    <img src="{{url_for('static', filename='img/shandong.png')}}" alt="" style="position:absolute;top:60px;right:50%;margin-right:40px;width:400px;z-index:0;">
+    <svg width="420" height="288.3" id="plot21">
+        <g></g>
+    </svg>
+
+    <div id="index2">
+        <input type="text" class="form-control" value="AQI">
+        <div class="cell" name="0">AQI</div>
+        <div class="cell" name="1">SO2</div>
+        <div class="cell" name="2">NO2</div>
+        <div class="cell" name="3">CO</div>
+        <div class="cell" name="4">O3</div>
+        <div class="cell" name="5">PM2.5</div>
+        <div class="cell" name="6">PM10</div>
+    </div>
+    <img src="{{url_for('static', filename='img/shandong.png')}}" alt="" style="position:absolute;top:60px;left:50%;margin-left:40px;width:400px;z-index:0;">
+    <svg width="420" height="288.3" id="plot22">
+        <g></g>
+    </svg>
+
+    <div id="info">
+        <h5></h5>
+        <h6></h6>
+    </div>
+
+    <div id="info2">
+        <h5></h5>
+        <h6></h6>
+    </div>
+
+    <p style="color:#999;font-size:12px;text-align:center;position:absolute;top:15px;left:50%;margin-left:-90px;"><span style="color:rgb(231,198,57);margin-right:5px;">氨氮</span>和<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">化学需氧量</span>数据较为完整<br/>其他数据<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">大量缺失</span></p>
+
+    <div style="display:inline-block;position:absolute;bottom:60px;right:20px;">
+        <p style="margin-left:54px;">空气指标</p>
+        <div>
+            <span style="font-size:12px;margin-right:8px;">优</span>
+            <img src="{{url_for('static', filename='img/legend2.png')}}" alt="" style="width:120px;height:20px;">
+            <span style="font-size:12px;margin-left:8px;">差</span>
+        </div>
+    </div>
+</div>
+<h3 style="margin-top:0px;text-align:left;margin-bottom:20px;margin-left:20px;">氨氮和空气质量 <span style="color:#d94e5d;">关联匹配</span></h3>
+<div id="plot3">
+    <div class="row">
+        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+            <div id="plot31">
+                <div id="clear">清除选择</div>
+                <p style="color:#999;font-size:12px;text-align:center;position:absolute;bottom:155px;right:-28px;">为各个污染监测站匹配<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">时序特征</span><br/><span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">最相似</span>的空气监测站</p>
+                <svg width="480" height="343" style="margin:30px auto;">
+                    <g></g>
+                </svg>
+                <img src="{{url_for('static', filename='img/shandong.png')}}" alt="" style="position:absolute;left:50%;margin-left:-240px;width:480px;z-index:-1;top:30px;">
+            </div>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            <div style="position:relative;">
+                <div id="legend">
+                    <span style="width:40px;height:12px;background-color:rgba(217, 78, 93, 0.8);display:inline-block;margin-right:8px;border-radius:2px;"></span>
+                    <span style="font-size:12px;color:#999;">氨氮监测</span>
+                    <span style="width:40px;height:12px;background-color:rgba(231, 198, 57, 0.8);display:inline-block;margin-left:20px;margin-right:8px;border-radius:2px;"></span>
+                    <span style="font-size:12px;color:#999;">空气质量</span>
+                </div>
+                <div id="plot32"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<h3 style="margin-top:10px;text-align:center;margin-bottom:20px;">氨氮和空气质量 <span style="color:#d94e5d;">动态关联</span></h3>
+<div id="plot4">
+    <img src="{{url_for('static', filename='img/shandong.png')}}" alt="" style="position:absolute;top:40px;right:50%;margin-right:40px;width:400px;z-index:0;">
+    <svg width="420" height="288.3" id="plot41">
+        <g></g>
+    </svg>
+
+    <img src="{{url_for('static', filename='img/shandong.png')}}" alt="" style="position:absolute;top:40px;left:50%;margin-left:40px;width:400px;z-index:0;">
+    <svg width="420" height="288.3" id="plot42">
+        <g></g>
+    </svg>
+
+    <span id="controller" class="fa fa-fw fa-play-circle"></span>
+
+    <p style="color:#999;font-size:12px;text-align:center;position:absolute;bottom:-10px;left:50%;margin-left:-135px;">氨氮和空气质量<span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">缺乏显著联系</span><br/><span style="color:rgb(231, 198, 57);margin-left:5px;margin-right:5px;">空气污染诱因</span>需进一步探索</p>
+
+
+    <div style="display:inline-block;position:absolute;bottom:5px;right:80px;">
+        <p style="margin-left:54px;text-align:left;">空气质量</p>
+        <div>
+            <span style="font-size:12px;margin-right:8px;">优</span>
+            <img src="{{url_for('static', filename='img/legend2.png')}}" alt="" style="width:120px;height:20px;">
+            <span style="font-size:12px;margin-left:8px;">差</span>
+        </div>
+    </div>
+    <span id="date"></span>
+</div>
+<div style="margin:20px 30px;">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="position:relative;">
+            <span style="color:rgb(231, 198, 57);position:absolute;left:10px;top:70px;font-size:12px;z-index:999;">氨氮<br/>监测</span>
+            <div id="plot51"></div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="position:relative;">
+            <span style="color:rgb(207, 91, 100);position:absolute;left:10px;top:70px;font-size:12px;z-index:999;">空气<br/>质量</span>
+            <div id="plot52"></div>
+        </div>
     </div>
 </div>
 <script>
@@ -82,7 +406,7 @@ $(document).ready(function() {
         var tmp = d3.interpolate(d3.rgb(207, 91, 100), d3.rgb(231, 198, 57));
         var colors = [];
         for (var i = 0; i < n; i++) {
-            colors.push(tmp(i * parseFloat(1) / n));
+            colors.push(tmp(i * parseFloat(1) / (n - 1)));
         }
         return colors;
     }
@@ -130,7 +454,7 @@ $(document).ready(function() {
         tooltip: {
             trigger: 'item',
             formatter: function(params) {
-                return '<span style="color:' + p1_colors[params.value[2]] + ';">' + params.value[2] + '</span><br/>' + params.name + '<br/>' + params.data.info[0] + '<br/>' + params.data.info[1];
+                return '<span style="color:' + p1_colors[params.value[2]] + ';">' + params.value[2] + '</span><br/>名称：' + params.name + '<br/>类型：' + params.data.info[0] + '<br/>行业：' + params.data.info[1];
             }
         },
     };
@@ -242,6 +566,792 @@ $(document).ready(function() {
         }]
     };
     plot14.setOption(option);
+
+    $('#plot2 #index input').click(function(event) {
+        $('#plot2 #index').addClass('active');
+        $('#plot2 #index .cell').show();
+    });
+    var plot2_param = '全部污染';
+    $('#plot2 #index').on('click', '.cell', function(event) {
+        event.preventDefault();
+        $('#plot2 #index').removeClass('active');
+        $('#plot2 #index input').val($(this).text());
+        $('#plot2 #index .cell').hide();
+
+        plot2_param = $(this).text();
+        plot2_param = plot2_param.split(' ')[0];
+        if (plot2_param == '全部污染') {
+            plot2_pollution.transition().duration(600).attr('r', function(d){
+                return Math.sqrt(dataset.json.pollution_type.data[d][4]) * 8;
+            });
+        }
+        else {
+            plot2_pollution.transition().duration(600).attr('r', function(d){
+                if (dataset.json.pollution_type['data'][d][0] == plot2_param) {
+                    return Math.sqrt(dataset.json.pollution_type.data[d][4]) * 8;
+                }
+                else {
+                    return 0;
+                }
+            });
+        }
+    });
+
+    $('#plot2 #index2 input').click(function(event) {
+        $('#plot2 #index2').addClass('active');
+        $('#plot2 #index2 .cell').show();
+    });
+    $('#plot2 #index2').on('click', '.cell', function(event) {
+        event.preventDefault();
+        $('#plot2 #index2').removeClass('active');
+        $('#plot2 #index2 input').val($(this).text());
+        $('#plot2 #index2 .cell').hide();
+
+        plot2_aqi_param = parseInt($(this).attr('name'));
+        plot2_aqi_max = -9999;
+        plot2_aqi_min = 9999;
+        for (var i = 0; i < dataset.json.pollution_aqi.length; i++) {
+            if (dataset.json.pollution_aqi[i][plot2_aqi_param] > plot2_aqi_max) {
+                plot2_aqi_max = dataset.json.pollution_aqi[i][plot2_aqi_param];
+            }
+            if (dataset.json.pollution_aqi[i][plot2_aqi_param] < plot2_aqi_min) {
+                plot2_aqi_min = dataset.json.pollution_aqi[i][plot2_aqi_param];
+            }
+        }
+
+        plot2_aqi.transition().duration(600).attr({
+            r: function(d){
+                return Math.sqrt((dataset.json.pollution_aqi[d][plot2_aqi_param] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min)) * 8;
+            },
+            fill: function(d){
+                var t = (dataset.json.pollution_aqi[d][plot2_aqi_param] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min);
+                if (t > 0.5) {
+                    return plot2_aqi_colors2((t - 0.5) * 2);
+                }
+                else {
+                    return plot2_aqi_colors1(t * 2);
+                }
+            },
+        });
+
+    });
+
+    var plot2_data = [];
+    for (var i = 0; i < dataset.json.pollution_type['data'].length; i++) {
+        plot2_data.push(i);
+    }
+    var plot2_pollution = d3.select('#plot2 svg#plot21 g').selectAll('circle').data(plot2_data, function(d){
+        return d;
+    });
+    var plot2_width = 400;
+    var plot2_height = 268.3;
+    var minLat = 34.39;
+    var maxLat = 38.41;
+    var minLng = 114.8;
+    var maxLng = 122.7;
+    var plot2_colors = generateColor(2);
+    var tmp = {}
+    for (var i = 1; i < dataset.json.pollution_type.count.length; i++) {
+        tmp[dataset.json.pollution_type.count[i][0]] = plot2_colors[i - 1];
+    }
+    plot2_colors = tmp;
+    plot2_pollution.enter().append('circle').attr({
+        cx: function(d){
+            return (dataset.json.pollution_type['data'][d][1][5] - minLng) * plot2_width / (maxLng - minLng) + 20;
+        },
+        cy: function(d){
+            return (maxLat - dataset.json.pollution_type['data'][d][1][6]) * plot2_height / (maxLat - minLat);
+        },
+        r: function(d){
+            return Math.sqrt(dataset.json.pollution_type.data[d][4]) * 8;
+        },
+        fill: function(d){
+            return plot2_colors[dataset.json.pollution_type['data'][d][0]];
+        },
+        name: function(d){
+            return d;
+        },
+        'fill-opacity': 1
+    });
+
+    var plot2_aqi_param = 0;
+    var plot2_aqi_data = [];
+    var plot2_aqi_max = -9999;
+    var plot2_aqi_min = 9999;
+    var plot2_aqi_colors1 = d3.interpolate(d3.rgb(84, 164, 182), d3.rgb(231, 198, 57));
+    var plot2_aqi_colors2 = d3.interpolate(d3.rgb(231, 198, 57), d3.rgb(207, 91, 100));
+    for (var i = 0; i < dataset.json.pollution_aqi.length; i++) {
+        plot2_aqi_data.push(i);
+        if (dataset.json.pollution_aqi[i][plot2_aqi_param] > plot2_aqi_max) {
+            plot2_aqi_max = dataset.json.pollution_aqi[i][plot2_aqi_param];
+        }
+        if (dataset.json.pollution_aqi[i][plot2_aqi_param] < plot2_aqi_min) {
+            plot2_aqi_min = dataset.json.pollution_aqi[i][plot2_aqi_param];
+        }
+    }
+    var plot2_aqi = d3.select("#plot2 svg#plot22 g").selectAll('circle').data(plot2_aqi_data, function(d){
+        return d;
+    });
+    plot2_aqi.enter().append('circle').attr({
+        cx: function(d){
+            return (dataset.json.pollution_aqi[d][9] - minLng) * plot2_width / (maxLng - minLng);
+        },
+        cy: function(d){
+            return (maxLat - dataset.json.pollution_aqi[d][10]) * plot2_height / (maxLat - minLat);
+        },
+        r: function(d){
+            return Math.sqrt((dataset.json.pollution_aqi[d][plot2_aqi_param] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min)) * 8;
+        },
+        fill: function(d){
+            var t = (dataset.json.pollution_aqi[d][plot2_aqi_param] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min);
+            if (t > 0.5) {
+                return plot2_aqi_colors2((t - 0.5) * 2);
+            }
+            else {
+                return plot2_aqi_colors1(t * 2);
+            }
+        },
+        name: function(d){
+            return d;
+        },
+        'fill-opacity': 1
+    });
+
+    for (var i = 0; i < dataset.json.pollution_type.count.length; i++) {
+        var tmp = dataset.json.pollution_type.count[i];
+        if (tmp[0] == '全部污染') {
+            $('#index').append('<div class="cell" name="' + tmp[0] + '">' + tmp[0] + ' ' + tmp[1] + '</div>');
+        }
+        else {
+            // $('#index').append('<div class="cell" name="' + tmp[0] + '"><span style="margin-right:10px;color:' + plot2_colors[tmp[0]] + ';">' + tmp[0] + '</span> ' + tmp[1] + '</div>');
+            $('#index').append('<div class="cell" name="' + tmp[0] + '"><span style="margin-right:10px;">' + tmp[0] + '</span> ' + tmp[1] + '</div>');
+        }
+    }
+
+    $('#plot2 svg#plot21 g').on('mouseenter', 'circle', function(event) {
+        event.preventDefault();
+        var name = $(this).attr('name');
+        var x = $(this).attr('cx');
+        var y = $(this).attr('cy');
+        plot2_pollution.transition().duration(300).attr('r', function(d){
+            if (d == name) {
+                return 10;
+            }
+            else {
+                if (plot2_param == '全部污染' || dataset.json.pollution_type.data[d][0] == plot2_param) {
+                    return Math.sqrt(dataset.json.pollution_type.data[d][4]) * 8;
+                }
+                else {
+                    return 0;
+                }
+                return Math.sqrt(dataset.json.pollution_type.data[d][4]) * 8;
+            }
+        });
+        var tmp = dataset.json.pollution_type['data'][parseInt(name)];
+        $('#plot2 #info h5').text(tmp[1][0]);
+        $('#plot2 #info h6').css('color', plot2_colors[tmp[0]]).text(tmp[0] + ' ' + parseFloat(tmp[3]).toFixed(2));
+        $('#plot2 #info p').remove();
+        $('#plot2 #info').append('<p>名称<span>' + tmp[1][1] + '</span></p>');
+        $('#plot2 #info').append('<p>类别<span>' + tmp[1][2] + '</span></p>');
+        $('#plot2 #info').append('<p>行业<span>' + tmp[1][3] + '</span></p>');
+        $('#plot2 #info').append('<p>地址<span>' + tmp[1][4] + '</span></p>');
+        $('#plot2 #info').css({
+            left: parseInt(x) + $('#plot2 svg#plot21').offset().left - 20,
+            top: parseInt(y)
+        }).show();
+    });
+
+    $('#plot2 svg#plot21 g').on('mouseleave', 'circle', function(event) {
+        event.preventDefault();
+        plot2_pollution.transition().duration(300).attr('r', function(d){
+            if (plot2_param == '全部污染' || dataset.json.pollution_type.data[d][0] == plot2_param) {
+                return Math.sqrt(dataset.json.pollution_type.data[d][4]) * 8;
+            }
+            else {
+                return 0;
+            }
+        });
+        $('#plot2 #info p').remove();
+        $('#plot2 #info').hide();
+    });
+
+    $('#plot2 svg#plot22 g').on('mouseenter', 'circle', function(event) {
+        event.preventDefault();
+        var name = $(this).attr('name');
+        var x = $(this).attr('cx');
+        var y = $(this).attr('cy');
+        plot2_aqi.transition().duration(300).attr('r', function(d){
+            if (d == name) {
+                return 10;
+            }
+            else {
+                return Math.sqrt((dataset.json.pollution_aqi[d][plot2_aqi_param] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min)) * 8;
+            }
+        });
+        var tmp = dataset.json.pollution_aqi[parseInt(name)];
+        $('#plot2 #info2 h5').text(tmp[12] + ' ' + tmp[8]);
+        $('#plot2 #info2 h6').text(tmp[11]);
+        $('#plot2 #info2 p').remove();
+        $('#plot2 #info2').append('<p>AQI<span>' + tmp[0] + '</span></p>');
+        $('#plot2 #info2').append('<p>SO2<span>' + tmp[1] + '</span></p>');
+        $('#plot2 #info2').append('<p>NO2<span>' + tmp[2] + '</span></p>');
+        $('#plot2 #info2').append('<p>CO<span>' + tmp[3] + '</span></p>');
+        $('#plot2 #info2').append('<p>O3<span>' + tmp[4] + '</span></p>');
+        $('#plot2 #info2').append('<p>PM2.5<span>' + tmp[5] + '</span></p>');
+        $('#plot2 #info2').append('<p>PM10<span>' + tmp[6] + '</span></p>');
+        $('#plot2 #info2').css({
+            left: parseInt(x) + $('#plot2 svg#plot22').offset().left - 20,
+            top: parseInt(y)
+        }).show();
+    });
+
+    $('#plot2 svg#plot22 g').on('mouseleave', 'circle', function(event) {
+        event.preventDefault();
+        plot2_aqi.transition().duration(300).attr('r', function(d){
+            return Math.sqrt((dataset.json.pollution_aqi[d][plot2_aqi_param] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min)) * 8;
+        });
+        $('#plot2 #info2 p').remove();
+        $('#plot2 #info2').hide();
+    });
+
+    var plot3_width = 480;
+    var plot3_height = 322;
+    var plot3_data = [];
+    for (var i = 0; i < dataset.json.pollution_match.link.length; i++) {
+        plot3_data.push(i);
+    }
+    var plot3_line = d3.select('#plot3 svg g').selectAll('line').data(plot3_data, function(d){
+        return d;
+    });
+    plot3_line.enter().append('line').attr({
+        x1: function(d){
+            return (dataset.json.pollution_match.link[d][2] - minLng) / (maxLng - minLng) * plot3_width;
+        },
+        y1: function(d){
+            return (maxLat - dataset.json.pollution_match.link[d][3]) / (maxLat - minLat) * plot3_height;
+        },
+        x2: function(d){
+            return (dataset.json.pollution_match.link[d][6] - minLng) / (maxLng - minLng) * plot3_width;
+        },
+        y2: function(d){
+            return (maxLat - dataset.json.pollution_match.link[d][7]) / (maxLat - minLat) * plot3_height;
+        },
+        stroke: 'rgba(231, 198, 57, 0.4)',
+        'stroke-width': 1,
+        name: function(d){
+            return dataset.json.pollution_match.link[d][4];
+        }
+    });
+    var plot3_pollution_data = [];
+    for (var i = 0; i < dataset.json.pollution_match.pollution.length; i++) {
+        plot3_pollution_data.push(i);
+    }
+    var plot3_pollution = d3.select("#plot3 svg g").selectAll("rect").data(plot3_pollution_data, function(d){
+        return d;
+    })
+    plot3_pollution.enter().append('rect').attr({
+        width: 2,
+        height: 2,
+        x: function(d){
+            return (dataset.json.pollution_match.pollution[d][2] - minLng) / (maxLng - minLng) * plot3_width - 1;
+        },
+        y: function(d){
+            return (maxLat - dataset.json.pollution_match.pollution[d][3]) / (maxLat - minLat) * plot3_height - 1;
+        },
+        fill: 'rgba(250, 250, 250, 0.6)',
+        name: function(d){
+            return dataset.json.pollution_match.pollution[d][0];
+        }
+    });
+    var plot3_aqi_data = [];
+    for (var i = 0; i < dataset.json.pollution_match.aqis.length; i++) {
+        plot3_aqi_data.push(i);
+    }
+    var plot3_aqi = d3.select("#plot3 svg g").selectAll("circle").data(plot3_aqi_data, function(d){
+        return d;
+    })
+    plot3_aqi.enter().append('circle').attr({
+        r: function(d){
+            return Math.sqrt((dataset.json.pollution_match.aqis[d][1] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min)) * 8;
+        },
+        cx: function(d){
+            return (dataset.json.pollution_match.aqis[d][2] - minLng) / (maxLng - minLng) * plot3_width;
+        },
+        cy: function(d){
+            return (maxLat - dataset.json.pollution_match.aqis[d][3]) / (maxLat - minLat) * plot3_height;
+        },
+        fill: function(d){
+            var t = (dataset.json.pollution_match.aqis[d][1] - plot2_aqi_min) / (plot2_aqi_max - plot2_aqi_min);
+            if (t > 0.5) {
+                return plot2_aqi_colors2((t - 0.5) * 2);
+            }
+            else {
+                return plot2_aqi_colors1(t * 2);
+            }
+        },
+        name: function(d){
+            return dataset.json.pollution_match.aqis[d][0];
+        }
+    });
+
+    var click_first_time = true;
+    $('#plot31 svg g').on('click', 'circle', function(event) {
+        event.preventDefault();
+        var name = $(this).attr('name');
+
+        if (click_first_time) {
+            click_first_time = false;
+            plot3_line.attr('stroke', function(d){
+                if (dataset.json.pollution_match.link[d][4] == name) {
+                    return 'rgba(231, 198, 57, 0.4)';
+                }
+                else {
+                    return 'rgba(231, 198, 57, 0.02)';
+                }
+            });
+            plot3_pollution.attr('fill-opacity', function(d){
+                if (dataset.json.pollution_match.pollution[d][4] == name) {
+                    return 1;
+                }
+                else {
+                    return 0.05;
+                }
+            });
+            plot3_aqi.attr('fill-opacity', function(d){
+                if (dataset.json.pollution_match.aqis[d][0] == name) {
+                    return 1;
+                }
+                else {
+                    return 0.05;
+                }
+            });
+        }
+        else {
+            plot3_line.transition().duration(300).attr('stroke', function(d){
+                if (dataset.json.pollution_match.link[d][4] == name) {
+                    return 'rgba(231, 198, 57, 0.4)';
+                }
+                else {
+                    return 'rgba(231, 198, 57, 0.02)';
+                }
+            });
+            plot3_pollution.transition().duration(300).attr('fill-opacity', function(d){
+                if (dataset.json.pollution_match.pollution[d][4] == name) {
+                    return 1;
+                }
+                else {
+                    return 0.05;
+                }
+            });
+            plot3_aqi.transition().duration(300).attr('fill-opacity', function(d){
+                if (dataset.json.pollution_match.aqis[d][0] == name) {
+                    return 1;
+                }
+                else {
+                    return 0.05;
+                }
+            });
+        }
+
+        plot32_option.series = [];
+        plot32_option.yAxis[0].axisLabel.show = true;
+        plot32_option.yAxis[1].axisLabel.show = true;
+        
+        for (var i = 0; i < dataset.json.pollution_match.pollution.length; i++) {
+            var tmp = dataset.json.pollution_match.pollution[i];
+            if (tmp[4] == name) {
+                plot32_option.series.push({
+                    name: tmp[0] + ' 氨氮监测',
+                    type: 'line',
+                    symbol: 'none',
+                    showSymbol: false,
+                    smooth: true,
+                    data: dataset.json.pollution_detail.pollution[tmp[0]],
+                    lineStyle: {
+                        normal: {
+                            color: 'rgba(217, 78, 93, 0.5)'
+                        }
+                    },
+                });
+            }
+        }
+
+        plot32_option.series.push({
+            name: name + ' 空气质量',
+            type: 'line',
+            symbol: 'none',
+            showSymbol: false,
+            smooth: true,
+            data: dataset.json.pollution_detail.aqis[name].data,
+            lineStyle: {
+                normal: {
+                    color: 'rgba(231, 198, 57, 0.5)'
+                }
+            },
+            yAxisIndex: 1
+        });
+
+        plot32 = echarts.init(document.getElementById('plot32'), 'dark');
+        plot32.setOption(plot32_option);
+    });
+
+    $('#plot3 #clear').click(function(event) {
+        plot3_line.transition().duration(300).attr('stroke', 'rgba(231, 198, 57, 0.4)');
+        plot3_pollution.transition().duration(300).attr('fill-opacity', 1);
+        plot3_aqi.transition().duration(300).attr('fill-opacity', 1);
+
+        plot32_option.yAxis[0].axisLabel.show = false;
+        plot32_option.yAxis[1].axisLabel.show = false;
+        plot32_option.series = [];
+        plot32 = echarts.init(document.getElementById('plot32'), 'dark');
+        plot32.setOption(plot32_option);
+    });
+
+    var plot32 = echarts.init(document.getElementById('plot32'), 'dark');
+    var plot32_option = {
+        tooltip: {
+            trigger: 'axis',
+            formatter: function(params) {
+                var str = params[0].name + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                    if (params[i]['seriesName'].indexOf('空气质量') >= 0) {
+                        str += params[i]['seriesName'] + '：<span style="color:rgba(231, 198, 57, 1);">' + params[i]['value'] + '</span><br/>';
+                    }
+                    else {
+                        str += params[i]['seriesName'] + '：<span style="color:rgba(217, 78, 93, 1);">' + params[i]['value'] + '</span><br/>';
+                    }
+                }
+                return str;
+            }
+        },
+        grid: {
+            left: 40,
+            right: 50,
+            top: 25,
+            bottom: 10
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false
+            },
+            data: dataset.json.pollution_detail.times
+        },
+        yAxis: [{
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                margin: 12,
+                show: false,
+                textStyle: {
+                    color: 'rgba(217, 78, 93, 1)'
+                }
+            }
+        }, {
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                margin: 12,
+                show: false,
+                textStyle: {
+                    color: 'rgba(231, 198, 57, 1)'
+                }
+            },
+        }],
+        series: []
+    };
+    plot32.setOption(plot32_option);
+
+    var plot4_index = 0;
+    
+    var plot4_pollution_data = [];
+    for (var i = 0; i < dataset.json.pollution_animation.pollution.length; i++) {
+        plot4_pollution_data.push(i);
+    }
+    var plot4_pollution = d3.select('#plot41 g').selectAll('circle.pollution').data(plot4_pollution_data, function(d){
+        return d;
+    });
+    plot4_pollution.enter().append('circle').attr({
+        class: 'pollution',
+        cx: function(d){
+            var tmp = Math.sqrt(dataset.json.pollution_animation.pollution[d][3][plot4_index]);
+            return (dataset.json.pollution_animation.pollution[d][1] - minLng) / (maxLng - minLng) * plot2_width + 20;
+        },
+        cy: function(d){
+            var tmp = Math.sqrt(dataset.json.pollution_animation.pollution[d][3][plot4_index]);
+            return (maxLat - dataset.json.pollution_animation.pollution[d][2]) / (maxLat - minLat) * plot2_height;
+        },
+        name: function(d){
+            return dataset.json.pollution_animation.pollution[d][0];
+        },
+        r: function(d){
+            var tmp = Math.sqrt(dataset.json.pollution_animation.pollution[d][3][plot4_index]);
+            return tmp * 1.5;
+        },
+        fill: 'rgb(231, 198, 57)',
+        'fill-opacity': 0.8
+    });
+
+    var plot4_aqis_data = [];
+    for (var i = 0; i < dataset.json.pollution_animation.aqis.length; i++) {
+        plot4_aqis_data.push(i);
+    }
+    var plot4_aqis = d3.select('#plot42 g').selectAll('circle.aqis').data(plot4_aqis_data, function(d){
+        return d;
+    });
+    plot4_aqis.enter().append('circle').attr({
+        class: 'aqis',
+        cx: function(d){
+            return (dataset.json.pollution_animation.aqis[d][1] - minLng) / (maxLng - minLng) * plot2_width;
+        },
+        cy: function(d){
+            return (maxLat - dataset.json.pollution_animation.aqis[d][2]) / (maxLat - minLat) * plot2_height;
+        },
+        name: function(d){
+            return dataset.json.pollution_animation.aqis[d][0];
+        },
+        r: function(d){
+            var tmp = Math.sqrt(dataset.json.pollution_animation.aqis[d][3][plot4_index] / 400);
+            if (tmp > 1) {
+                tmp = 1;
+            }
+            return tmp * 8;
+        },
+        fill: function(d){
+            var tmp = dataset.json.pollution_animation.aqis[d][3][plot4_index] / 400;
+            if (tmp > 1) {
+                tmp = 1;
+            }
+            if (tmp > 0.5) {
+                return plot2_aqi_colors2((tmp - 0.5) * 2);
+            }
+            else {
+                return plot2_aqi_colors1(tmp * 2);
+            }
+        },
+    });
+    
+    $('#plot4 #date').text(dataset.json.pollution_animation.times[plot4_index].substr(0, 10));
+
+    var plot4_animation = false;
+    var plot4_interval;
+    $('#plot4 #controller').click(function(event) {
+        var plot4_animation = true;
+        $(this).fadeOut(400);
+        plot4_index += 1;
+        plot4_animate();
+        plot4_interval = setInterval(function(){
+            plot4_index += 1;
+            if (plot4_index < dataset.json.pollution_animation.times.length) {
+                plot4_animate();
+            }
+            else {
+                clearInterval(plot4_interval);
+                $('#plot4 #controller').fadeIn(400);
+                plot4_index = 0;
+                plot4_animate();
+            }
+        }, 500);
+    });
+    function plot4_animate(){
+        $('#plot4 #date').text(dataset.json.pollution_animation.times[plot4_index].substr(0, 10));
+
+        plot4_pollution.transition().duration(450).attr({
+            r: function(d){
+                var tmp = Math.sqrt(dataset.json.pollution_animation.pollution[d][3][plot4_index]);
+                return tmp * 1.5;
+            },
+        });
+
+        plot4_aqis.transition().duration(450).attr({
+            r: function(d){
+                var tmp = Math.sqrt(dataset.json.pollution_animation.aqis[d][3][plot4_index] / 400);
+                if (tmp > 1) {
+                    tmp = 1;
+                }
+                return tmp * 8;
+            },
+            fill: function(d){
+                var tmp = dataset.json.pollution_animation.aqis[d][3][plot4_index] / 400;
+                if (tmp > 1) {
+                    tmp = 1;
+                }
+                if (tmp > 0.5) {
+                    return plot2_aqi_colors2((tmp - 0.5) * 2);
+                }
+                else {
+                    return plot2_aqi_colors1(tmp * 2);
+                }
+            },
+        });
+    }
+
+    var plot51 = echarts.init(document.getElementById('plot51'), 'dark');
+    var plot51_option = {
+        tooltip: {
+            show: false
+        },
+        grid: {
+            left: 40,
+            right: 20,
+            top: 15,
+            bottom: 25
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: true,
+                margin: 12,
+            },
+            data: dataset.json.pollution_detail.times
+        },
+        yAxis: [{
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false,
+            },
+        }],
+        series: []
+    };
+    for (var key in dataset.json.pollution_detail.pollution) {
+        if (Math.random() < 0.7) {
+            continue;
+        }
+        var tmp = 0;
+        for (var i = 0; i < dataset.json.pollution_detail.pollution[key].length; i++) {
+            tmp += dataset.json.pollution_detail.pollution[key][i];
+        }
+        if (tmp == 0) {
+            continue;
+        }
+        plot51_option.series.push({
+            name: dataset.json.pollution_detail.pollution[key].name + ' 空气质量',
+            type: 'line',
+            symbol: 'none',
+            showSymbol: false,
+            smooth: true,
+            data: dataset.json.pollution_detail.pollution[key],
+            lineStyle: {
+                normal: {
+                    color: 'rgba(231, 198, 57, 0.5)'
+                }
+            },
+        });
+    }
+    plot51.setOption(plot51_option);
+
+    var plot52 = echarts.init(document.getElementById('plot52'), 'dark');
+    var plot52_option = {
+        tooltip: {
+            show: false
+        },
+        grid: {
+            left: 40,
+            right: 20,
+            top: 15,
+            bottom: 25
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: true,
+                margin: 12,
+            },
+            data: dataset.json.pollution_detail.times
+        },
+        yAxis: [{
+            type: 'value',
+            splitNumber: 4,
+            splitLine: {
+                show: true,
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                show: false,
+            },
+        }],
+        series: []
+    };
+    for (var key in dataset.json.pollution_detail.aqis) {
+        if (Math.random() < 0.7) {
+            continue;
+        }
+        var tmp = 0;
+        for (var i = 0; i < dataset.json.pollution_detail.aqis[key].data.length; i++) {
+            tmp += dataset.json.pollution_detail.aqis[key].data[i];
+        }
+        if (tmp == 0) {
+            continue;
+        }
+        plot52_option.series.push({
+            name: dataset.json.pollution_detail.aqis[key].name + ' 氨氮监测',
+            type: 'line',
+            symbol: 'none',
+            showSymbol: false,
+            smooth: true,
+            data: dataset.json.pollution_detail.aqis[key].data,
+            lineStyle: {
+                normal: {
+                    color: 'rgba(207, 91, 100, 0.5)'
+                }
+            },
+        });
+    }
+    plot52.setOption(plot52_option);
 
 });
 </script>

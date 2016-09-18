@@ -266,7 +266,8 @@ $(document).ready(function() {
     var plot1_height = 660;
     var plot1_margins = [30, 40, 30, 40];
     var plot1_rain_colors = d3.interpolate(d3.rgb(234, 199, 54), d3.rgb(80, 163, 186));
-    var plot1_aqi_colors = d3.interpolate(d3.rgb(234, 199, 54), d3.rgb(217, 78, 93));
+    var plot1_aqi_colors1 = d3.interpolate(d3.rgb(84, 164, 182), d3.rgb(231, 198, 57));
+    var plot1_aqi_colors2 = d3.interpolate(d3.rgb(231, 198, 57), d3.rgb(207, 91, 100));
     var width1 = 372.7;
     var height1 = 250;
     var minLat1 = 34.39;
@@ -342,11 +343,17 @@ $(document).ready(function() {
             }
         },
         r: function(d) {
-            return 4;
+            var tmp = dataset.json.rain_aqi[d];
+            return 10 * tmp[2];
         },
         fill: function(d) {
             var tmp = dataset.json.rain_aqi[d];
-            return plot1_aqi_colors(tmp[2]);
+            if (tmp[2] > 0.5) {
+                return plot1_aqi_colors2((tmp[2] - 0.5) * 2);
+            }
+            else {
+                return plot1_aqi_colors1(tmp[2] * 2);
+            }
         },
         cx: function(d) {
             var tmp = dataset.json.rain_aqi[d];
@@ -880,7 +887,13 @@ $(document).ready(function() {
             fill: function(d){
                 for (var j = 0; j < dataset.json.rain_aqi.length; j++) {
                     if (dataset.json.rain_aqi[j][4] == d) {
-                        return plot1_aqi_colors(dataset.json.rain_aqi[j][2]);
+                        var t = dataset.json.rain_aqi[j][2];
+                        if (t > 0.5) {
+                            return plot1_aqi_colors2((t - 0.5) * 2);
+                        }
+                        else {
+                            return plot1_aqi_colors1(t * 2);
+                        }
                     }
                 }
             },
@@ -924,7 +937,13 @@ $(document).ready(function() {
                         return dataset.json.rain_filter.aqis[d].data[idx] / 30
                     },
                     fill: function(d){
-                        return plot1_aqi_colors(dataset.json.rain_filter.aqis[d].data[idx] / 400)
+                        var t = dataset.json.rain_filter.aqis[d].data[idx] / 400;
+                        if (t > 0.5) {
+                            return plot1_aqi_colors2((t - 0.5) * 2);
+                        }
+                        else {
+                            return plot1_aqi_colors1(t * 2);
+                        }
                     }
                 });
                 setTimeout(function(){
@@ -1017,6 +1036,11 @@ $(document).ready(function() {
                 }
             },
         });
+        for (var i = 0; i < tmp[0].length; i++) {
+            if (tmp[0][i] > 180) {
+                tmp[0][i] -= 360;
+            }
+        }
         plot32_option.series.push({
             name: name + ' 风向',
             type: 'line',
