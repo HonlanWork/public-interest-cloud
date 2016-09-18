@@ -164,7 +164,10 @@
     </div>
 </div>
 <h3 style="text-align:center;margin-top:60px;margin-bottom:10px;">你可能不知道这些 <span style="color:#d94e5d;">关联</span></h3>
-<div id="plot4"></div>
+<div style="position:relative;">
+    <div id="plot4"></div>
+    <p style="position:absolute;bottom:10px;right:60px;text-align:right;color:#999;font-size:12px;">AQI 和 PM2.5<span style="color:#88b089;font-size:16px;margin-left:5px;margin-right:5px;">高度线性相关</span></p>
+</div>
 <h3 style="text-align:right;margin-top:60px;margin-bottom:40px;margin-right:20px;">空气监测站点详细 <span style="color:#d94e5d;">数据</span></h3>
 <div class="row">
     <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
@@ -501,29 +504,29 @@ $(document).ready(function() {
         index: 1,
         text: 'AQI'
     }, {
-        name: 'so2',
+        name: 'pm25',
         index: 2,
+        text: 'PM2.5'
+    }, {
+        name: 'pm10',
+        index: 3,
+        text: 'PM10'
+    }, {
+        name: 'so2',
+        index: 4,
         text: 'SO2'
     }, {
         name: 'no2',
-        index: 3,
+        index: 5,
         text: 'NO2'
     }, {
         name: 'co',
-        index: 4,
+        index: 6,
         text: 'CO'
     }, {
         name: 'o3',
-        index: 5,
-        text: 'O3'
-    }, {
-        name: 'pm10',
-        index: 6,
-        text: 'PM10'
-    }, {
-        name: 'pm25',
         index: 7,
-        text: 'PM2.5'
+        text: 'O3'
     }, {
         name: 'province',
         index: 8,
